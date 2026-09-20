@@ -94,6 +94,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Reject raw fixtures in the public repository
+        working-directory: .
         run: scripts/check_no_raw_fixtures.sh
 
       - name: Set up Node
