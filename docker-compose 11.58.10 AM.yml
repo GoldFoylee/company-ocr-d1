@@ -1,0 +1,41 @@
+# No top-level `version:` key — Compose v2+ (you're on v5.5.0) ignores it and
+# warns that it's obsolete, so it's left out entirely.
+#
+# The React frontend is NOT a service here on purpose: during development you
+# run it directly with `npm run dev` (fast hot-reload, no rebuild needed) and
+# point it at this backend via VITE_API_BASE_URL. It only gets containerized
+# later, as a built static bundle served by nginx, for the main-branch/prod image.
+
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: draft1
+      POSTGRES_PASSWORD: draft1_dev_password
+      POSTGRES_DB: draft1
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U draft1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./:/app
+
+volumes:
+  db_data:

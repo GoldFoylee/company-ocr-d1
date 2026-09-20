@@ -1,0 +1,26 @@
+# Runtime dependencies for Draft 1.
+# Versions below are recent-as-of-writing pins — run `pip list --outdated`
+# (or set up pip-tools/uv) before first install to confirm nothing newer
+# and non-breaking has shipped since.
+
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+sqlalchemy==2.0.35
+alembic==1.13.3
+psycopg2-binary==2.9.9
+pydantic==2.9.2
+pydantic-settings==2.5.2
+opencv-python-headless==4.10.0.84
+numpy==1.26.4
+pillow==10.4.0
+rapidfuzz==3.9.7
+openpyxl==3.1.5
+pandas==2.2.3
+python-multipart==0.0.9
+jinja2==3.1.4
+
+# OCR/HTR backend intentionally NOT pinned yet — add the winning model's
+# package here once the research-agent comparison (see chat) picks one,
+# e.g. `transformers` + `torch` for TrOCR, or `paddleocr`, or `easyocr`.
+# The rest of the app should never import that package directly — go
+# through app/ocr/base.py's Recognizer interface instead.
