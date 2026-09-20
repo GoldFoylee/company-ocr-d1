@@ -3,8 +3,6 @@ name: CI
 on:
   pull_request:
     branches: [develop, main]
-  push:
-    branches: [develop, main]
 
 jobs:
   test:
@@ -33,6 +31,13 @@ jobs:
           python-version: "3.11"
           cache: "pip"
 
+      - name: Set up Node for frontend integration test
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
       - name: Install system dependencies (OpenCV)
         run: sudo apt-get update && sudo apt-get install -y libgl1 libglib2.0-0
 
@@ -40,6 +45,10 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
 
       - name: Lint
         run: ruff check .
@@ -50,7 +59,28 @@ jobs:
       - name: Run tests with coverage
         env:
           DATABASE_URL: postgresql://draft1:draft1_dev_password@localhost:5432/draft1_test
-        run: pytest --cov=app --cov-report=term-missing --cov-fail-under=80
+        run: |
+          alembic upgrade head
+          pytest --cov=app --cov-report=term-missing --cov-fail-under=80
+
+      - name: Run live frontend health integration test
+        run: |
+          uvicorn app.main:app --host 127.0.0.1 --port 8000 > /tmp/draft1-backend.log 2>&1 &
+          backend_pid=$!
+          trap 'kill "$backend_pid"' EXIT
+
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8000/health > /dev/null; then
+              break
+            fi
+            if [ "$attempt" -eq 20 ]; then
+              cat /tmp/draft1-backend.log
+              exit 1
+            fi
+            sleep 1
+          done
+
+          npm --prefix frontend run test:integration
 
   frontend:
     runs-on: ubuntu-latest
