@@ -25,6 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Reject raw fixtures in the public repository
+        run: scripts/check_no_raw_fixtures.sh
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -89,6 +92,9 @@ jobs:
         working-directory: frontend
     steps:
       - uses: actions/checkout@v4
+
+      - name: Reject raw fixtures in the public repository
+        run: scripts/check_no_raw_fixtures.sh
 
       - name: Set up Node
         uses: actions/setup-node@v4
