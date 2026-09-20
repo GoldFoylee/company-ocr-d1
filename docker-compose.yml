@@ -15,7 +15,7 @@ services:
       POSTGRES_PASSWORD: draft1_dev_password
       POSTGRES_DB: draft1
     ports:
-      - "5432:5432"
+      - "${DB_HOST_PORT:-5432}:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:

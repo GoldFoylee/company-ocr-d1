@@ -48,3 +48,7 @@ do not simplify it "for now."
   component (e.g. grid detection, OCR wrapper, validation engine each in their own worktree)
   so working directories never collide. Merge each into `develop` via its own PR once its own
   tests pass — don't let one large branch accumulate every component at once.
+- Before starting PostgreSQL in a new worktree, set `DB_HOST_PORT` to an unused host port in
+  that worktree's local `.env` (for example, `DB_HOST_PORT=5433`). The database container still
+  listens on port 5432 inside its Compose network, so `DATABASE_URL` remains pointed at
+  `db:5432`. Each simultaneously running worktree must use a different `DB_HOST_PORT`.
