@@ -48,7 +48,10 @@ do not simplify it "for now."
   component (e.g. grid detection, OCR wrapper, validation engine each in their own worktree)
   so working directories never collide. Merge each into `develop` via its own PR once its own
   tests pass — don't let one large branch accumulate every component at once.
-- Before starting PostgreSQL in a new worktree, set `DB_HOST_PORT` to an unused host port in
-  that worktree's local `.env` (for example, `DB_HOST_PORT=5433`). The database container still
-  listens on port 5432 inside its Compose network, so `DATABASE_URL` remains pointed at
-  `db:5432`. Each simultaneously running worktree must use a different `DB_HOST_PORT`.
+- Before starting Docker services in a new worktree, give that worktree a unique
+  `COMPOSE_PROJECT_NAME`, `DB_HOST_PORT`, and `APP_HOST_PORT` in its local `.env` (for example,
+  `feature-grid-detection`, `5433`, and `8001`). Both ports use the same Compose substitution
+  pattern defined in `docker-compose.yml`; the containers still listen on `db:5432` and
+  `app:8000` inside their isolated Compose network. `DATABASE_URL` therefore remains pointed at
+  `db:5432`. Every simultaneously running worktree must use a distinct project name and host
+  ports so its containers, volume, database, and API do not collide with another worktree.

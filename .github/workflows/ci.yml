@@ -76,7 +76,9 @@ jobs:
 
           for attempt in {1..20}; do
             if curl --fail --silent http://127.0.0.1:8000/health > /dev/null; then
-              break
+              if curl --fail --silent http://127.0.0.1:8000/review/queue > /dev/null; then
+                break
+              fi
             fi
             if [ "$attempt" -eq 20 ]; then
               cat /tmp/draft1-backend.log
