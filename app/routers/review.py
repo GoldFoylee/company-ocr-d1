@@ -144,6 +144,9 @@ def mark_sheet_verified(
         date=sheet.date,
         image_path=sheet.image_path,
         status=sheet.status,
+        force_verified=sheet.force_verified,
+        force_verified_by=sheet.force_verified_by,
+        force_verified_at=sheet.force_verified_at,
         verified_via_force=verified_via_force,
         unreviewed_flagged_count=unreviewed_count,
     )

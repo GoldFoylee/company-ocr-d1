@@ -85,6 +85,9 @@ class SheetVerificationResponse(BaseModel):
     date: date
     image_path: str
     status: str
+    force_verified: bool = False
+    force_verified_by: int | None = None
+    force_verified_at: datetime | None = None
     verified_via_force: bool = False
     unreviewed_flagged_count: int = 0
 

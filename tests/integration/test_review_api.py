@@ -382,12 +382,18 @@ def test_verify_sheet_success_when_all_flagged_fields_reviewed(
     assert data["id"] == sheet.id
     assert data["status"] == "verified"
     assert data["verified_via_force"] is False
+    assert data["force_verified"] is False
+    assert data["force_verified_by"] is None
+    assert data["force_verified_at"] is None
     assert data["unreviewed_flagged_count"] == 0
 
     db_session.expire_all()
     updated_sheet = db_session.get(Sheet, sheet.id)
     assert updated_sheet is not None
     assert updated_sheet.status == "verified"
+    assert updated_sheet.force_verified is False
+    assert updated_sheet.force_verified_by is None
+    assert updated_sheet.force_verified_at is None
 
 
 def test_verify_clean_sheet_with_no_flagged_fields(client: TestClient, db_session: Session) -> None:
@@ -447,7 +453,19 @@ def test_verify_sheet_force_override_records_audit_log(
     data = response.json()
     assert data["status"] == "verified"
     assert data["verified_via_force"] is True
+    assert data["force_verified"] is True
+    assert data["force_verified_by"] == reviewer.id
+    assert data["force_verified_at"] is not None
     assert data["unreviewed_flagged_count"] == 2
+
+    # Assert persistence to the database
+    db_session.expire_all()
+    stored_sheet = db_session.get(Sheet, sheet.id)
+    assert stored_sheet is not None
+    assert stored_sheet.status == "verified"
+    assert stored_sheet.force_verified is True
+    assert stored_sheet.force_verified_by == reviewer.id
+    assert stored_sheet.force_verified_at is not None
 
     # Assert structured audit log was recorded
     assert any("AUDIT FORCE VERIFY" in record.message for record in caplog.records)
@@ -596,3 +614,53 @@ def test_end_to_end_review_lifecycle(client: TestClient, db_session: Session) ->
     db_sheet = db_session.get(Sheet, sheet.id)
     assert db_sheet is not None
     assert db_sheet.status == "verified"
+    assert db_sheet.force_verified is False
+    assert db_sheet.force_verified_by is None
+    assert db_sheet.force_verified_at is None
+
+
+def test_force_verified_database_fields_lifecycle(client: TestClient, db_session: Session) -> None:
+    """Explicitly verify that force-verification is persisted to the database,
+    allowing queries for which sheets were ever force-verified vs normally verified.
+    """
+    reviewer = seed_reviewer(db_session, name="Audit Verifier")
+
+    # Sheet 1: Normally verified
+    normal_sheet = seed_sheet(db_session, vehicle="NORM-01-AA-1111")
+    ext_normal = seed_extraction(db_session, normal_sheet.id, "odometer", rule_flag=True)
+    # Human corrects field
+    client.post(f"/review/fields/{ext_normal.id}/correction", json={"final_value": "5000"})
+    # Normal verification
+    resp_normal = client.post(f"/review/sheets/{normal_sheet.id}/verify")
+    assert resp_normal.status_code == 200
+
+    # Sheet 2: Force verified with unreviewed flagged fields
+    forced_sheet = seed_sheet(db_session, vehicle="FORC-02-BB-2222")
+    seed_extraction(db_session, forced_sheet.id, "fuel", rule_flag=True, rule_flag_reason="Bad val")
+    # Force verification
+    resp_forced = client.post(
+        f"/review/sheets/{forced_sheet.id}/verify?force=true&reviewer_id={reviewer.id}"
+    )
+    assert resp_forced.status_code == 200
+
+    # Check persistence and queryability in the database
+    db_session.expire_all()
+
+    stored_normal = db_session.get(Sheet, normal_sheet.id)
+    assert stored_normal is not None
+    assert stored_normal.status == "verified"
+    assert stored_normal.force_verified is False
+    assert stored_normal.force_verified_by is None
+    assert stored_normal.force_verified_at is None
+
+    stored_forced = db_session.get(Sheet, forced_sheet.id)
+    assert stored_forced is not None
+    assert stored_forced.status == "verified"
+    assert stored_forced.force_verified is True
+    assert stored_forced.force_verified_by == reviewer.id
+    assert stored_forced.force_verified_at is not None
+
+    # Query for all force-verified sheets
+    force_verified_sheets = db_session.query(Sheet).filter(Sheet.force_verified.is_(True)).all()
+    assert stored_forced.id in [s.id for s in force_verified_sheets]
+    assert stored_normal.id not in [s.id for s in force_verified_sheets]

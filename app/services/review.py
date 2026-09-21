@@ -141,6 +141,9 @@ def verify_sheet(
     verified_via_force = False
     if unreviewed_count > 0 and force:
         verified_via_force = True
+        sheet.force_verified = True
+        sheet.force_verified_by = reviewer_id
+        sheet.force_verified_at = datetime.now(UTC)
         audit_logger.warning(
             "AUDIT FORCE VERIFY: Sheet %s (%s, %s) force-verified with %s flagged fields. "
             "Extractions: %s. Reviewer: %s at %s",
