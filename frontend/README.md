@@ -1,32 +1,29 @@
-# React + TypeScript + Vite
+# Review UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+The React frontend reads the live D3 review API and never substitutes mocked review data.
 
-Currently, two official plugins are available:
+## Local development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+From the repository root:
 
-## React Compiler
+1. Copy `.env.example` to `.env` and choose unused `DB_HOST_PORT` and `APP_HOST_PORT`
+   values when another worktree is running.
+2. Start the real backend with `docker compose up -d --build db app`.
+3. Apply migrations with `docker compose exec app alembic upgrade head`.
+4. Reset the synthetic demo data with
+   `docker compose exec app python -m scripts.seed_review_demo`.
+5. If the API is not on port 8000, set `VITE_API_BASE_URL` in `frontend/.env`.
+6. Run `npm ci`, followed by `npm run dev`, from this directory.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The synthetic seed is deliberately identifiable and safe to reset. It does not use golden
+fixtures, real roster data, or real customer information.
 
-## Expanding the Oxlint configuration
+The Task D4 checkpoint—reviewing a real fixture through this UI and confirming its corrected
+Excel export—remains deferred until Step 0a provides the anonymized golden fixtures. The
+synthetic workflow proves the UI/API interaction only; it does not satisfy that checkpoint.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Tests
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+- `npm test -- --run` runs the component tests.
+- `npm run test:integration` runs the Testing Library workflow against the live backend.
+- `npm run build` type-checks and builds the production bundle.

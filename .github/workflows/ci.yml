@@ -66,7 +66,9 @@ jobs:
           alembic upgrade head
           pytest --cov=app --cov-report=term-missing --cov-fail-under=80
 
-      - name: Run live frontend health integration test
+      - name: Run live frontend review integration tests
+        env:
+          DATABASE_URL: postgresql://draft1:draft1_dev_password@localhost:5432/draft1_test
         run: |
           uvicorn app.main:app --host 127.0.0.1 --port 8000 > /tmp/draft1-backend.log 2>&1 &
           backend_pid=$!
@@ -83,6 +85,7 @@ jobs:
             sleep 1
           done
 
+          python -m scripts.seed_review_demo
           npm --prefix frontend run test:integration
 
   frontend:

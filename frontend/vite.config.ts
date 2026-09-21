@@ -9,7 +9,7 @@ export default defineConfig({
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
-      'src/**/*.integration.test.ts',
+      'src/**/*.integration.test.{ts,tsx}',
     ],
     setupFiles: './src/setupTests.ts',
   },
