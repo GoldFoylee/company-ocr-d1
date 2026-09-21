@@ -23,6 +23,13 @@ class Sheet(Base):
     date: Mapped[date] = mapped_column(Date)
     image_path: Mapped[str] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(32), server_default="pending", index=True)
+    force_verified: Mapped[bool] = mapped_column(Boolean, server_default="false", default=False)
+    force_verified_by: Mapped[int | None] = mapped_column(
+        ForeignKey("reviewers.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    force_verified_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
 
 
 class Extraction(Base):
@@ -40,7 +47,5 @@ class Extraction(Base):
     reviewer_id: Mapped[int | None] = mapped_column(
         ForeignKey("reviewers.id", ondelete="SET NULL"), nullable=True, index=True
     )
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
