@@ -233,3 +233,71 @@ def test_missing_paddleocr_package_raises_actionable_import_error(monkeypatch) -
 
     with pytest.raises(ImportError, match="paddleocr is not installed"):
         PaddleOCRRecognizer()
+
+
+# --- enable_mkldnn gating (see app/ocr/paddle.py's _MKLDNN_ENV_VAR comment) ---
+#
+# These monkeypatch _build_predictor rather than constructing a real PaddleOCR
+# model: they verify what gets passed to it, not the real model's behavior.
+
+
+def _capture_build_predictor_calls(monkeypatch) -> list[bool]:
+    calls: list[bool] = []
+
+    def fake_build_predictor(model_tier: str, enable_mkldnn: bool):
+        calls.append(enable_mkldnn)
+        return FakePredictor()
+
+    monkeypatch.setattr("app.ocr.paddle._build_predictor", fake_build_predictor)
+    return calls
+
+
+def test_enable_mkldnn_defaults_to_enabled_when_env_var_unset(monkeypatch) -> None:
+    monkeypatch.delenv("PADDLEOCR_ENABLE_MKLDNN", raising=False)
+    calls = _capture_build_predictor_calls(monkeypatch)
+
+    PaddleOCRRecognizer()
+
+    assert calls == [True]
+
+
+@pytest.mark.parametrize("disabled_value", ["0", "false", "False", "no", "OFF"])
+def test_enable_mkldnn_env_var_disables_it(monkeypatch, disabled_value: str) -> None:
+    monkeypatch.setenv("PADDLEOCR_ENABLE_MKLDNN", disabled_value)
+    calls = _capture_build_predictor_calls(monkeypatch)
+
+    PaddleOCRRecognizer()
+
+    assert calls == [False]
+
+
+@pytest.mark.parametrize("enabled_value", ["1", "true", "yes", "anything-else"])
+def test_enable_mkldnn_env_var_other_values_keep_it_enabled(
+    monkeypatch, enabled_value: str
+) -> None:
+    monkeypatch.setenv("PADDLEOCR_ENABLE_MKLDNN", enabled_value)
+    calls = _capture_build_predictor_calls(monkeypatch)
+
+    PaddleOCRRecognizer()
+
+    assert calls == [True]
+
+
+def test_enable_mkldnn_constructor_override_wins_over_env_var(monkeypatch) -> None:
+    monkeypatch.setenv("PADDLEOCR_ENABLE_MKLDNN", "0")
+    calls = _capture_build_predictor_calls(monkeypatch)
+
+    PaddleOCRRecognizer(enable_mkldnn=True)
+
+    assert calls == [True]
+
+
+def test_enable_mkldnn_is_not_consulted_when_model_is_supplied_directly(monkeypatch) -> None:
+    def fail_if_called(*args, **kwargs):
+        raise AssertionError("_build_predictor must not run when model= is given")
+
+    monkeypatch.setattr("app.ocr.paddle._build_predictor", fail_if_called)
+
+    recognizer = PaddleOCRRecognizer(model=FakePredictor())
+
+    assert isinstance(recognizer, Recognizer)
