@@ -15,6 +15,9 @@ select = ["E", "F", "I", "UP", "B"]
 testpaths = ["tests"]
 pythonpath = ["."]
 addopts = "-ra -q"
+markers = [
+    "manual: not run in the standard suite; opt in explicitly (see the marked test's docstring)",
+]
 
 [tool.mypy]
 python_version = "3.11"
