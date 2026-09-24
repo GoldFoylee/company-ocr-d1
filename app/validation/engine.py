@@ -5,11 +5,11 @@ This module operates on text only. It deliberately has no dependency on OCR or i
 
 from collections.abc import Sequence
 from dataclasses import dataclass
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
 from typing import Final
 
-DEFAULT_TIME_TOLERANCE: Final = timedelta(minutes=30)
+TOTAL_TIME_CATEGORIES: Final[frozenset[str]] = frozenset({"0h", "12h", "1d"})
 
 _DATE_FORMATS: Final = ("%Y-%m-%d", "%d/%m/%Y", "%d-%m-%Y", "%d.%m.%Y")
 
@@ -40,11 +40,6 @@ class ValidationResult:
 
 class ValidationEngine:
     """Parse raw values and apply the Draft 1 row and sheet rules."""
-
-    def __init__(self, time_tolerance: timedelta = DEFAULT_TIME_TOLERANCE) -> None:
-        if time_tolerance < timedelta(0):
-            raise ValueError("time_tolerance must not be negative")
-        self.time_tolerance = time_tolerance
 
     def validate_kilometres(
         self, row: ExtractedRowValues, row_number: int | None = None
@@ -90,9 +85,9 @@ class ValidationEngine:
     def validate_time(
         self, row: ExtractedRowValues, row_number: int | None = None
     ) -> ValidationResult:
-        """Check elapsed time against the reported total using the configured tolerance."""
+        """Validate clock fields and the form's categorical total-time value."""
         parsed_values: dict[str, int] = {}
-        for field_name in ("start_time", "closing_time", "total_time"):
+        for field_name in ("start_time", "closing_time"):
             raw_value = getattr(row, field_name)
             value = _parse_time(raw_value)
             if value is None:
@@ -104,8 +99,20 @@ class ValidationEngine:
                 )
             parsed_values[field_name] = value
 
-        elapsed_seconds = parsed_values["closing_time"] - parsed_values["start_time"]
-        if elapsed_seconds < 0:
+        total_time_category = row.total_time.strip()
+        if total_time_category not in TOTAL_TIME_CATEGORIES:
+            expected_categories = ", ".join(sorted(TOTAL_TIME_CATEGORIES))
+            return ValidationResult(
+                rule="time_total",
+                passed=False,
+                reason=(
+                    f"unrecognized total_time category: {row.total_time!r}; "
+                    f"expected one of {expected_categories}"
+                ),
+                row_number=row_number,
+            )
+
+        if parsed_values["closing_time"] < parsed_values["start_time"]:
             return ValidationResult(
                 rule="time_total",
                 passed=False,
@@ -113,29 +120,13 @@ class ValidationEngine:
                 row_number=row_number,
             )
 
-        reported_seconds = parsed_values["total_time"]
-        difference_seconds = abs(elapsed_seconds - reported_seconds)
-        tolerance_seconds = int(self.time_tolerance.total_seconds())
-        tolerance_label = _format_tolerance(self.time_tolerance)
-
-        if difference_seconds > tolerance_seconds:
-            return ValidationResult(
-                rule="time_total",
-                passed=False,
-                reason=(
-                    f"time mismatch: elapsed {_format_time(elapsed_seconds)}, "
-                    f"reported {_format_time(reported_seconds)}; difference "
-                    f"{_format_time(difference_seconds)} exceeds ±{tolerance_label}"
-                ),
-                row_number=row_number,
-            )
-
         return ValidationResult(
             rule="time_total",
             passed=True,
             reason=(
-                f"elapsed {_format_time(elapsed_seconds)} and reported "
-                f"{_format_time(reported_seconds)} are within ±{tolerance_label}"
+                f"start_time {row.start_time.strip()!r}, closing_time "
+                f"{row.closing_time.strip()!r}, and total_time category "
+                f"{total_time_category!r} are valid"
             ),
             row_number=row_number,
         )
@@ -257,18 +248,3 @@ def _parse_date(raw_value: str) -> date | None:
 
 def _format_decimal(value: Decimal) -> str:
     return format(value, "f")
-
-
-def _format_time(seconds: int) -> str:
-    hours, remainder = divmod(seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
-    if seconds:
-        return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
-    return f"{hours:02d}:{minutes:02d}"
-
-
-def _format_tolerance(tolerance: timedelta) -> str:
-    total_seconds = int(tolerance.total_seconds())
-    if total_seconds % 60 == 0:
-        return f"{total_seconds // 60} minutes"
-    return _format_time(total_seconds)

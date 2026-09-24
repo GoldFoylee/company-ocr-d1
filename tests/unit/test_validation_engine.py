@@ -1,12 +1,11 @@
 """Business-rule tests for values extracted from a vehicle-log sheet."""
 
 from dataclasses import replace
-from datetime import timedelta
 
 import pytest
 
 from app.validation.engine import (
-    DEFAULT_TIME_TOLERANCE,
+    TOTAL_TIME_CATEGORIES,
     ExtractedRowValues,
     ValidationEngine,
 )
@@ -21,13 +20,9 @@ def make_row(**overrides: str) -> ExtractedRowValues:
         total_km="150",
         start_time="08:00",
         closing_time="10:00",
-        total_time="02:00",
+        total_time="12h",
     )
     return replace(row, **overrides)
-
-
-def test_default_time_tolerance_is_named_and_thirty_minutes() -> None:
-    assert DEFAULT_TIME_TOLERANCE == timedelta(minutes=30)
 
 
 def test_kilometre_check_accepts_matching_raw_numeric_strings() -> None:
@@ -60,45 +55,47 @@ def test_kilometre_check_flags_unparseable_values(field: str, value: str) -> Non
     assert result.reason == f"unparseable {field} value: {value!r}"
 
 
-def test_time_check_accepts_exact_match() -> None:
-    result = ValidationEngine().validate_time(make_row())
+@pytest.mark.parametrize("total_time", sorted(TOTAL_TIME_CATEGORIES))
+def test_time_check_accepts_every_known_total_time_category(total_time: str) -> None:
+    result = ValidationEngine().validate_time(make_row(total_time=total_time))
 
     assert result.passed is True
     assert result.rule == "time_total"
-    assert "within ±30 minutes" in result.reason
+    assert f"total_time category {total_time!r}" in result.reason
 
 
-@pytest.mark.parametrize(
-    ("total_time", "expected_passed"),
-    [("01:30", True), ("02:30", True), ("01:29", False), ("02:31", False)],
-)
-def test_time_check_uses_inclusive_thirty_minute_tolerance(
-    total_time: str, expected_passed: bool
-) -> None:
-    result = ValidationEngine().validate_time(make_row(total_time=total_time))
+def test_time_check_strips_category_whitespace() -> None:
+    result = ValidationEngine().validate_time(make_row(total_time=" 12h "))
 
-    assert result.passed is expected_passed
-    if expected_passed:
-        assert "within ±30 minutes" in result.reason
-    else:
-        assert "exceeds ±30 minutes" in result.reason
+    assert result.passed is True
+    assert "total_time category '12h'" in result.reason
 
 
 def test_time_check_accepts_seconds() -> None:
     result = ValidationEngine().validate_time(
-        make_row(start_time="08:00:30", closing_time="10:00:30", total_time="02:00:00")
+        make_row(start_time="08:00:30", closing_time="10:00:30")
     )
 
     assert result.passed is True
 
 
-@pytest.mark.parametrize("field", ["start_time", "closing_time", "total_time"])
+@pytest.mark.parametrize("field", ["start_time", "closing_time"])
 @pytest.mark.parametrize("value", ["", "25:00", "not-a-time"])
 def test_time_check_flags_unparseable_values(field: str, value: str) -> None:
     result = ValidationEngine().validate_time(make_row(**{field: value}))
 
     assert result.passed is False
     assert result.reason == f"unparseable {field} format: {value!r}"
+
+
+@pytest.mark.parametrize("value", ["", "02:00", "24h", "12H", "not-a-category"])
+def test_time_check_flags_unknown_total_time_categories(value: str) -> None:
+    result = ValidationEngine().validate_time(make_row(total_time=value))
+
+    assert result.passed is False
+    assert result.reason == (
+        f"unrecognized total_time category: {value!r}; expected one of 0h, 12h, 1d"
+    )
 
 
 def test_time_check_flags_closing_time_before_start_time() -> None:
@@ -192,29 +189,3 @@ def test_validate_sheet_returns_row_and_sheet_results() -> None:
         ("non_decreasing_dates", None),
     ]
     assert all(result.passed for result in results)
-
-
-def test_custom_time_tolerance_is_supported_without_changing_parsing() -> None:
-    engine = ValidationEngine(time_tolerance=timedelta(minutes=5))
-
-    result = engine.validate_time(make_row(total_time="02:06"))
-
-    assert result.passed is False
-    assert "exceeds ±5 minutes" in result.reason
-
-
-def test_second_level_values_and_tolerance_have_clear_reasons() -> None:
-    engine = ValidationEngine(time_tolerance=timedelta(seconds=30))
-
-    result = engine.validate_time(
-        make_row(start_time="08:00:00", closing_time="10:00:31", total_time="02:00:00")
-    )
-
-    assert result.passed is False
-    assert "elapsed 02:00:31" in result.reason
-    assert "difference 00:00:31 exceeds ±00:00:30" in result.reason
-
-
-def test_negative_time_tolerance_is_rejected() -> None:
-    with pytest.raises(ValueError, match="time_tolerance must not be negative"):
-        ValidationEngine(time_tolerance=timedelta(minutes=-1))
