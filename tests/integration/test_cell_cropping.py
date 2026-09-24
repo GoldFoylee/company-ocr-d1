@@ -1,4 +1,4 @@
-"""Real-fixture contract for preprocessing, grid detection, and cell cropping."""
+"""Real-fixture coverage for preprocessing, grid detection, and cell cropping."""
 
 import json
 from pathlib import Path
@@ -26,16 +26,9 @@ EXPECTED_FIELDS = (
 )
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason=(
-        "B2's existing Hough detector finds no vertical boundaries in the real scans; "
-        "enable this contract after the separately scoped detector fix lands"
-    ),
-)
 @pytest.mark.parametrize("fixture_id", FIXTURE_IDS)
 def test_real_fixture_pipeline_crops_every_populated_row(fixture_id: str) -> None:
-    """Specify the complete real-data contract currently blocked by B2."""
+    """Exercise the complete real-data path against every anonymized golden sheet."""
     from app.cropping import crop_cells
 
     image = cv2.imread(str(FIXTURE_DIRECTORY / f"{fixture_id}.jpg"))
