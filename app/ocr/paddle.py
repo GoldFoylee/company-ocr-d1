@@ -15,6 +15,7 @@ cropping, and cells are small, already-axis-aligned crops -- running three extra
 classifier models per cell would only add latency, not accuracy, here.
 """
 
+import os
 from dataclasses import dataclass
 from typing import Any, Final, Protocol
 
@@ -26,6 +27,36 @@ from app.ocr.base import OCRBackendError, validate_cell_image, validate_confiden
 # description for the tiny/small/medium accuracy comparison) -- the fairest
 # baseline for later models (e.g. TrOCR, fine-tuning) to be compared against.
 _DEFAULT_MODEL_TIER: Final = "medium"
+
+# Verified during this task on the dev container (linux/amd64 -- x86_64
+# paddlepaddle has no linux/arm64 wheel, so on an Apple Silicon host this runs
+# under QEMU emulation): the default oneDNN (MKLDNN) CPU path raises
+# "NotImplementedError: (Unimplemented) ConvertPirAttribute2RuntimeAttribute not
+# support [pir::ArrayAttribute<pir::DoubleAttribute>]" on every real inference
+# call there. Disabling it resolves the error there.
+#
+# Whether this also reproduces on native x86_64 (e.g. CI's ubuntu-latest
+# runners) is unverified from this session -- unlike the QEMU host, nothing
+# here confirms it's affected. So this does NOT disable MKLDNN unconditionally:
+# doing that would cost every native x86_64 environment oneDNN's real inference
+# speedup for a bug that may not apply to it. Instead this reads an env var,
+# defaulting to PaddleOCR's own default (enabled) when unset, and only the
+# known-affected environment's `.env` sets it to disable.
+_MKLDNN_ENV_VAR: Final = "PADDLEOCR_ENABLE_MKLDNN"
+_MKLDNN_DISABLED_VALUES: Final = frozenset({"0", "false", "no", "off"})
+
+
+def _mkldnn_enabled(override: bool | None) -> bool:
+    """Resolve whether to enable oneDNN/MKLDNN: explicit override, else env var.
+
+    Enabled (PaddleOCR's own default) unless PADDLEOCR_ENABLE_MKLDNN is set to
+    one of "0"/"false"/"no"/"off" (case-insensitive), or the caller passed
+    ``enable_mkldnn=False`` directly. See the module-level comment above for why
+    this is not unconditional.
+    """
+    if override is not None:
+        return override
+    return os.environ.get(_MKLDNN_ENV_VAR, "").strip().lower() not in _MKLDNN_DISABLED_VALUES
 
 
 class OCRPredictor(Protocol):
@@ -48,7 +79,7 @@ class _TextLine:
     left: float
 
 
-def _build_predictor(model_tier: str) -> OCRPredictor:
+def _build_predictor(model_tier: str, enable_mkldnn: bool) -> OCRPredictor:
     try:
         from paddleocr import PaddleOCR
     except ImportError as exc:
@@ -64,16 +95,7 @@ def _build_predictor(model_tier: str) -> OCRPredictor:
         use_doc_orientation_classify=False,
         use_doc_unwarping=False,
         use_textline_orientation=False,
-        # Verified during this task on the dev container (linux/amd64 -- x86_64
-        # paddlepaddle has no linux/arm64 wheel, so on an Apple Silicon host this
-        # runs under QEMU emulation): the default oneDNN (MKLDNN) CPU path raises
-        # "NotImplementedError: (Unimplemented) ConvertPirAttribute2RuntimeAttribute
-        # not support [pir::ArrayAttribute<pir::DoubleAttribute>]" on every real
-        # inference call. Disabling it resolves the error and inference is still
-        # sub-second per crop. Whether this also reproduces on native x86_64 (e.g.
-        # CI) is unverified from this session; kept off unconditionally since it
-        # costs little on the crop sizes this module handles.
-        enable_mkldnn=False,
+        enable_mkldnn=enable_mkldnn,
     )
 
 
@@ -118,6 +140,7 @@ class PaddleOCRRecognizer:
         model: OCRPredictor | None = None,
         *,
         model_tier: str = _DEFAULT_MODEL_TIER,
+        enable_mkldnn: bool | None = None,
     ) -> None:
         """Build the recognizer.
 
@@ -126,8 +149,16 @@ class PaddleOCRRecognizer:
         When omitted, a real PP-OCRv6 pipeline is constructed lazily -- importing
         ``paddleocr`` only here, never at module import time, so ``import app.ocr``
         stays free of the OCR framework.
+
+        ``enable_mkldnn`` overrides the PADDLEOCR_ENABLE_MKLDNN env var (see the
+        module-level comment on _MKLDNN_ENV_VAR); leave it ``None`` to use that.
+        Ignored when ``model`` is supplied directly.
         """
-        self._predictor = model if model is not None else _build_predictor(model_tier)
+        self._predictor = (
+            model
+            if model is not None
+            else _build_predictor(model_tier, _mkldnn_enabled(enable_mkldnn))
+        )
 
     def recognize(self, cell_image: np.ndarray) -> tuple[str, float]:
         """Recognize a cropped cell image as ``(text, confidence)``.
