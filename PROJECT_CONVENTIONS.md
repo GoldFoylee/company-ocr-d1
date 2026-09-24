@@ -32,6 +32,18 @@ agent session (ECC or otherwise) working in this repo.
   should aim for full branch coverage, since it's the last line of defense on financial fields.
 - No PR merges without CI green.
 
+## Stop conditions (agent sessions, every task)
+Unless a human explicitly says otherwise for that specific action, in that specific session:
+- Never merge or approve a pull request. Open it (draft or ready) and stop; a human merges.
+- Never change repository settings (branch protection, collaborators, secrets, webhooks, etc.).
+- Never `--force`/`--amend` on `develop` or `main`. The one standing exception:
+  force-push-with-lease **a feature branch to itself**, after rebasing that same branch on its
+  own base — never onto `develop` or `main`, and never another contributor's branch.
+
+These hold regardless of how confident the session is that CI is green or the change is safe.
+When a task's own instructions repeat or narrow these (e.g. "same stop conditions as always"),
+that phrase means exactly this section.
+
 ## Data logging (hard requirement, not an implementation detail)
 Every field extraction must be written to the `extractions` table with:
 image crop reference, raw OCR guess, confidence score, rule-flag result (and why), the
