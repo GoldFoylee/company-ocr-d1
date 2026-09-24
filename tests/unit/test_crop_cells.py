@@ -32,7 +32,7 @@ def test_crop_cells_tags_fields_in_physical_column_order() -> None:
     crops = crop_cells(_image_with_one_populated_date(), _two_row_grid())
 
     assert tuple(crop.field_name for crop in crops) == FIELD_NAMES
-    assert [crop.column for crop in crops] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 10]
+    assert [crop.column for crop in crops] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 10]
     assert all(crop.row == 0 for crop in crops)
     assert all(crop.image.shape == (30, 20, 3) for crop in crops)
     assert all(crop.excluded == (crop.field_name == "guest_name") for crop in crops)
@@ -41,7 +41,9 @@ def test_crop_cells_tags_fields_in_physical_column_order() -> None:
 def test_crop_cells_omits_unmapped_columns_and_blank_rows() -> None:
     crops = crop_cells(_image_with_one_populated_date(), _two_row_grid())
 
-    assert {crop.column for crop in crops}.isdisjoint({0, 11})
+    assert {crop.column for crop in crops}.isdisjoint({11})
+    assert crops[0].field_name == "ds_no"
+    assert crops[0].column == 0
     assert {crop.row for crop in crops} == {0}
 
 
