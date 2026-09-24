@@ -20,6 +20,7 @@ from app.pipeline import run_sheet_pipeline
 FIXTURE_DIRECTORY = Path("tests/fixtures/anonymized")
 FIXTURE_IDS = tuple(f"sheet_{number:03d}" for number in range(1, 6))
 STORED_FIELDS = {
+    "ds_no",
     "date",
     "start_time",
     "start_km",
@@ -52,6 +53,23 @@ class CountingMockRecognizer(MockRecognizer):
         return super().recognize(cell_image)
 
 
+class FixtureDsMockRecognizer(MockRecognizer):
+    """Return fixture DS numbers for their actual crop calls; other text stays canned."""
+
+    def __init__(self, ds_numbers: list[str], confidence: float = 0.9) -> None:
+        super().__init__(text="MOCK_TEXT", confidence=confidence)
+        self.ds_numbers = ds_numbers
+        self.calls = 0
+
+    def recognize(self, cell_image: np.ndarray) -> tuple[str, float]:
+        text, confidence = super().recognize(cell_image)
+        call_index = self.calls
+        self.calls += 1
+        if call_index % len(STORED_FIELDS) == 0:
+            return self.ds_numbers[call_index // len(STORED_FIELDS)], confidence
+        return text, confidence
+
+
 @pytest.fixture
 def db_session() -> Iterator[Session]:
     """Keep committed pipeline writes isolated from the rest of the test database."""
@@ -76,12 +94,14 @@ def test_real_sheet_pipeline_persists_every_extraction_and_audit_field(
     fixture_path = FIXTURE_DIRECTORY / f"{fixture_id}.jpg"
     ground_truth = json.loads((FIXTURE_DIRECTORY / f"{fixture_id}.json").read_text())
     expected_rows = len(ground_truth["rows"])
+    ds_numbers = [str(row["ds_no"]) for row in ground_truth["rows"]]
+    recognizer = FixtureDsMockRecognizer(ds_numbers)
 
     result = run_sheet_pipeline(
         image_path=fixture_path,
         crop_root=tmp_path / "crops",
         db=db_session,
-        recognizer=MockRecognizer(text="MOCK_TEXT", confidence=0.9),
+        recognizer=recognizer,
         vehicle="SYNTHETIC-VEHICLE",
         branch="Synthetic Branch",
         sheet_date=date(2026, 9, 24),
@@ -110,10 +130,8 @@ def test_real_sheet_pipeline_persists_every_extraction_and_audit_field(
     assert result.roster_match is not None
     assert result.roster_match.canonical_name == "Morgan Alder"
     assert len(result.validation_results) == expected_rows * 2 + 2
-    assert any(
-        item.rule == "unique_ds_no" and not item.passed
-        for item in result.validation_results
-    )
+    assert recognizer.calls == len(extractions)
+    assert next(item for item in result.validation_results if item.rule == "unique_ds_no").passed
     assert {extraction.field_name for extraction in extractions} == STORED_FIELDS
 
     rows_seen: dict[int, set[str]] = {}
@@ -123,9 +141,13 @@ def test_real_sheet_pipeline_persists_every_extraction_and_audit_field(
         assert crop_path.name.endswith(f"_{extraction.field_name}.jpg")
         row_match = re.fullmatch(r"row(\d{2})_.+\.jpg", crop_path.name)
         assert row_match is not None
-        rows_seen.setdefault(int(row_match.group(1)), set()).add(extraction.field_name)
+        row_number = int(row_match.group(1))
+        rows_seen.setdefault(row_number, set()).add(extraction.field_name)
         assert cv2.imread(extraction.image_crop_ref) is not None
-        assert extraction.raw_ocr_value == "MOCK_TEXT"
+        if extraction.field_name == "ds_no":
+            assert extraction.raw_ocr_value == ds_numbers[row_number - 1]
+        else:
+            assert extraction.raw_ocr_value == "MOCK_TEXT"
         assert extraction.confidence == pytest.approx(0.9)
         assert isinstance(extraction.rule_flag, bool)
         if extraction.rule_flag:
@@ -166,7 +188,7 @@ def test_mocked_values_fail_validation_and_enter_review_queue(
     extractions = db_session.scalars(
         select(Extraction).where(Extraction.sheet_id == result.sheet_id)
     ).all()
-    assert len(extractions) == 110
+    assert len(extractions) == 121
     assert recognizer.calls == len(extractions)
     assert all(item.rule_flag for item in extractions)
     assert all("Low OCR confidence" in (item.rule_flag_reason or "") for item in extractions)
@@ -175,3 +197,38 @@ def test_mocked_values_fail_validation_and_enter_review_queue(
         for item in extractions
         if item.field_name in VALIDATED_FIELDS
     )
+
+
+def test_duplicate_ds_number_from_real_fixture_crop_fails_uniqueness(
+    db_session: Session, tmp_path: Path
+) -> None:
+    fixture_id = "sheet_004"
+    ground_truth = json.loads((FIXTURE_DIRECTORY / f"{fixture_id}.json").read_text())
+    ds_numbers = [str(row["ds_no"]) for row in ground_truth["rows"]]
+    ds_numbers[1] = ds_numbers[0]
+
+    result = run_sheet_pipeline(
+        image_path=FIXTURE_DIRECTORY / f"{fixture_id}.jpg",
+        crop_root=tmp_path / "crops",
+        db=db_session,
+        recognizer=FixtureDsMockRecognizer(ds_numbers),
+        vehicle="SYNTHETIC-VEHICLE",
+        branch="Synthetic Branch",
+        sheet_date=date(2026, 9, 24),
+        roster_query="Morgon Alder",
+        roster_names=("Morgan Alder",),
+    )
+
+    uniqueness = next(item for item in result.validation_results if item.rule == "unique_ds_no")
+    assert not uniqueness.passed
+    assert "duplicate DS.No 1 found at rows 1 and 2" in uniqueness.reason
+    ds_extractions = db_session.scalars(
+        select(Extraction).where(
+            Extraction.sheet_id == result.sheet_id,
+            Extraction.field_name == "ds_no",
+        )
+    ).all()
+    assert len(ds_extractions) == 11
+    assert [item.raw_ocr_value for item in ds_extractions] == ds_numbers
+    assert all(item.rule_flag for item in ds_extractions)
+    assert all("duplicate DS.No" in (item.rule_flag_reason or "") for item in ds_extractions)

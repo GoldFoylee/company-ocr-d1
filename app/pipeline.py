@@ -12,7 +12,7 @@ from pathlib import Path
 import cv2
 from sqlalchemy.orm import Session
 
-from app.cropping import CroppedCell, crop_cells
+from app.cropping import FIELD_NAMES, CroppedCell, crop_cells
 from app.grid import GridLines, detect_cells, detect_grid_lines
 from app.matching import NameMatch, find_best_name_match
 from app.models import Extraction, Sheet
@@ -21,20 +21,7 @@ from app.preprocessing import preprocess
 from app.validation.engine import ExtractedRowValues, ValidationEngine, ValidationResult
 from app.validation.flagging import decide_field_flag
 
-_REQUIRED_FIELDS = frozenset(
-    {
-        "date",
-        "start_time",
-        "start_km",
-        "close_time",
-        "close_km",
-        "total_km",
-        "total_time",
-        "toll",
-        "parking",
-        "journey_details",
-    }
-)
+_REQUIRED_FIELDS = frozenset(field for field in FIELD_NAMES if field != "guest_name")
 _KILOMETRE_FIELDS = frozenset({"start_km", "close_km", "total_km"})
 _TIME_FIELDS = frozenset({"start_time", "close_time", "total_time"})
 
@@ -64,6 +51,7 @@ def _validation_for_field(
     row_number: int,
     row_rules: dict[tuple[str, int], ValidationResult],
     date_rule: ValidationResult,
+    ds_rule: ValidationResult,
 ) -> ValidationResult:
     """Attach each existing rule to the fields that it actually checks."""
     if field_name in _KILOMETRE_FIELDS:
@@ -72,6 +60,8 @@ def _validation_for_field(
         return row_rules[("time_total", row_number)]
     if field_name == "date":
         return date_rule
+    if field_name == "ds_no":
+        return ds_rule
     return ValidationResult(
         rule="no_applicable_rule",
         passed=True,
@@ -81,13 +71,9 @@ def _validation_for_field(
 
 
 def _build_validation_row(fields: dict[str, _RecognizedCrop]) -> ExtractedRowValues:
-    """Adapt tagged OCR output to the validation engine's existing row contract.
-
-    DS No. is outside crop_cells()'s extraction schema. Its empty value makes
-    the uniqueness rule fail explicitly instead of inventing a number.
-    """
+    """Adapt tagged OCR output to the validation engine's existing row contract."""
     return ExtractedRowValues(
-        ds_no="",
+        ds_no=fields["ds_no"].text,
         date=fields["date"].text,
         starting_km=fields["start_km"].text,
         closing_km=fields["close_km"].text,
@@ -179,6 +165,9 @@ def run_sheet_pipeline(
         date_rule = next(
             result for result in validation_results if result.rule == "non_decreasing_dates"
         )
+        ds_rule = next(
+            result for result in validation_results if result.rule == "unique_ds_no"
+        )
 
         # This demonstration input is independent of the scanned sheet.
         roster_match = find_best_name_match(roster_query, roster_names)
@@ -191,7 +180,7 @@ def run_sheet_pipeline(
                     recognized.text,
                     recognized.confidence,
                     _validation_for_field(
-                        recognized.crop.field_name, row_number, row_rules, date_rule
+                        recognized.crop.field_name, row_number, row_rules, date_rule, ds_rule
                     ),
                 )
                 db.add(

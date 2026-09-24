@@ -21,6 +21,7 @@ from app.validation.engine import ValidationResult
 @pytest.mark.parametrize(
     ("field_name", "expected_rule"),
     [
+        ("ds_no", "unique_ds_no"),
         ("start_km", "kilometre_total"),
         ("close_km", "kilometre_total"),
         ("total_km", "kilometre_total"),
@@ -39,12 +40,14 @@ def test_existing_rules_map_only_to_the_fields_they_check(
     km_rule = ValidationResult("kilometre_total", False, "km mismatch", row_number=2)
     time_rule = ValidationResult("time_total", False, "bad category", row_number=2)
     date_rule = ValidationResult("non_decreasing_dates", False, "bad date")
+    ds_rule = ValidationResult("unique_ds_no", False, "duplicate DS.No")
 
     result = pipeline._validation_for_field(
         field_name,
         2,
         {("kilometre_total", 2): km_rule, ("time_total", 2): time_rule},
         date_rule,
+        ds_rule,
     )
 
     assert result.rule == expected_rule
@@ -80,7 +83,7 @@ def test_incomplete_crops_roll_back_sheet_and_remove_written_images(
     Base.metadata.create_all(engine)
     try:
         with Session(engine) as db:
-            with pytest.raises(ValueError, match="missing field crops"):
+            with pytest.raises(ValueError, match="ds_no"):
                 pipeline.run_sheet_pipeline(
                     image_path=source,
                     crop_root=tmp_path / "crops",

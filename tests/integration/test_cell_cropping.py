@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 import cv2
+import numpy as np
 import pytest
 
 from app.grid import detect_cells, detect_grid_lines
@@ -12,6 +13,7 @@ from app.preprocessing import preprocess
 FIXTURE_DIRECTORY = Path("tests/fixtures/anonymized")
 FIXTURE_IDS = tuple(f"sheet_{number:03d}" for number in range(1, 6))
 EXPECTED_FIELDS = (
+    "ds_no",
     "date",
     "guest_name",
     "start_time",
@@ -49,5 +51,12 @@ def test_real_fixture_pipeline_crops_every_populated_row(fixture_id: str) -> Non
     for row in range(expected_row_count):
         row_crops = [crop for crop in crops if crop.row == row]
         assert tuple(crop.field_name for crop in row_crops) == EXPECTED_FIELDS
+        ds_crop = row_crops[0]
+        ds_box = next(cell for cell in cells if cell.row == row and cell.column == 0)
+        assert ds_crop.column == 0
+        assert ds_crop.box == ds_box
+        assert np.array_equal(
+            ds_crop.image, preprocessed[ds_box.y1 : ds_box.y2, ds_box.x1 : ds_box.x2]
+        )
         assert all(crop.image.size > 0 for crop in row_crops)
         assert all(crop.excluded == (crop.field_name == "guest_name") for crop in row_crops)

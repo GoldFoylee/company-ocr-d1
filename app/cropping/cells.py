@@ -9,6 +9,7 @@ import numpy as np
 from app.grid import CellBox
 
 FieldName = Literal[
+    "ds_no",
     "date",
     "guest_name",
     "start_time",
@@ -23,6 +24,7 @@ FieldName = Literal[
 ]
 
 FIELD_NAMES: Final[tuple[FieldName, ...]] = (
+    "ds_no",
     "date",
     "guest_name",
     "start_time",
@@ -36,12 +38,12 @@ FIELD_NAMES: Final[tuple[FieldName, ...]] = (
     "journey_details",
 )
 
-# Confirmed directly against the real fixture header. Physical columns 0 and
-# 11 are DS No. and Guest Signature and are outside the requested extraction
+# Confirmed directly against the real fixture header. Physical column 0 is
+# DS No.; column 11 is Guest Signature and remains outside the extraction
 # schema. The printed form has one combined "Toll Parking" column, so its one
 # physical crop intentionally supplies both logical tags.
 _PHYSICAL_COLUMN_FIELDS: Final[tuple[tuple[FieldName, ...], ...]] = (
-    (),
+    ("ds_no",),
     ("date",),
     ("guest_name",),
     ("start_time",),
