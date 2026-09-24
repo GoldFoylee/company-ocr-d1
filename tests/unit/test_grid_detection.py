@@ -1,8 +1,8 @@
 """Grid/cell detection tests against synthetically generated ruled grids.
 
-Golden fixtures (real scanned sheets) aren't ready yet, so these tests
-generate a synthetic ruled grid with known boundary positions in-test,
-rather than waiting -- same approach as tests/unit/test_preprocessing.py.
+The synthetic samples preserve coverage of the generic Hough fallback and
+known-coordinate assertions; real scanned-sheet coverage lives in the
+integration suite.
 
 One test (test_detect_grid_lines_representative_coordinate_is_inaccurate_
 under_perspective_warp) deliberately documents a known limitation rather
