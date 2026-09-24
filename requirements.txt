@@ -19,8 +19,10 @@ pandas==2.2.3
 python-multipart==0.0.9
 jinja2==3.1.4
 
-# OCR/HTR backend intentionally NOT pinned yet — add the winning model's
-# package here once the research-agent comparison (see chat) picks one,
-# e.g. `transformers` + `torch` for TrOCR, or `paddleocr`, or `easyocr`.
-# The rest of the app should never import that package directly — go
-# through app/ocr/base.py's Recognizer interface instead.
+# OCR backend: PP-OCRv6 (PaddleOCR), per the research-agent comparison.
+# paddleocr does not depend on paddlepaddle -- the inference framework is a
+# separate package and must be pinned alongside it. Neither is imported
+# outside app/ocr/paddle.py -- the rest of the app goes through
+# app/ocr/base.py's Recognizer interface instead.
+paddleocr==3.7.0
+paddlepaddle==3.3.1
