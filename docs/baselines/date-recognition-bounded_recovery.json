@@ -1,0 +1,702 @@
+{
+  "metadata": {
+    "copied_other_records": 781,
+    "device": "cpu",
+    "ds_reads": [
+      {
+        "confidence": 0.9832526445388794,
+        "row": 0,
+        "sheet_id": "sheet_001",
+        "text": "1"
+      },
+      {
+        "confidence": 0.9999697208404541,
+        "row": 1,
+        "sheet_id": "sheet_001",
+        "text": "2"
+      },
+      {
+        "confidence": 0.999988317489624,
+        "row": 2,
+        "sheet_id": "sheet_001",
+        "text": "3"
+      },
+      {
+        "confidence": 0.9982840418815613,
+        "row": 3,
+        "sheet_id": "sheet_001",
+        "text": "4"
+      },
+      {
+        "confidence": 0.9999518394470215,
+        "row": 4,
+        "sheet_id": "sheet_001",
+        "text": "5"
+      },
+      {
+        "confidence": 0.9998125433921814,
+        "row": 5,
+        "sheet_id": "sheet_001",
+        "text": "6"
+      },
+      {
+        "confidence": 0.9999262094497681,
+        "row": 6,
+        "sheet_id": "sheet_001",
+        "text": "7"
+      },
+      {
+        "confidence": 0.9999793767929077,
+        "row": 7,
+        "sheet_id": "sheet_001",
+        "text": "8"
+      },
+      {
+        "confidence": 0.9793368577957153,
+        "row": 8,
+        "sheet_id": "sheet_001",
+        "text": "9"
+      },
+      {
+        "confidence": 0.9998984336853027,
+        "row": 9,
+        "sheet_id": "sheet_001",
+        "text": "10"
+      },
+      {
+        "confidence": 0.9951835870742798,
+        "row": 10,
+        "sheet_id": "sheet_001",
+        "text": "11"
+      },
+      {
+        "confidence": 0.9983735084533691,
+        "row": 11,
+        "sheet_id": "sheet_001",
+        "text": "12"
+      },
+      {
+        "confidence": 0.7508485317230225,
+        "row": 12,
+        "sheet_id": "sheet_001",
+        "text": "13"
+      },
+      {
+        "confidence": 0.9998725652694702,
+        "row": 13,
+        "sheet_id": "sheet_001",
+        "text": "1"
+      },
+      {
+        "confidence": 0.9998869895935059,
+        "row": 14,
+        "sheet_id": "sheet_001",
+        "text": "1"
+      },
+      {
+        "confidence": 0.0,
+        "row": 0,
+        "sheet_id": "sheet_002",
+        "text": ""
+      },
+      {
+        "confidence": 0.0,
+        "row": 1,
+        "sheet_id": "sheet_002",
+        "text": ""
+      },
+      {
+        "confidence": 0.9998117089271545,
+        "row": 2,
+        "sheet_id": "sheet_002",
+        "text": "3"
+      },
+      {
+        "confidence": 0.0,
+        "row": 3,
+        "sheet_id": "sheet_002",
+        "text": ""
+      },
+      {
+        "confidence": 0.0,
+        "row": 4,
+        "sheet_id": "sheet_002",
+        "text": ""
+      },
+      {
+        "confidence": 0.9991785883903503,
+        "row": 5,
+        "sheet_id": "sheet_002",
+        "text": "6"
+      },
+      {
+        "confidence": 0.999913215637207,
+        "row": 6,
+        "sheet_id": "sheet_002",
+        "text": "7"
+      },
+      {
+        "confidence": 0.7431391477584839,
+        "row": 7,
+        "sheet_id": "sheet_002",
+        "text": "8"
+      },
+      {
+        "confidence": 0.7175489664077759,
+        "row": 8,
+        "sheet_id": "sheet_002",
+        "text": "9"
+      },
+      {
+        "confidence": 0.9974430799484253,
+        "row": 9,
+        "sheet_id": "sheet_002",
+        "text": "10"
+      },
+      {
+        "confidence": 0.989031970500946,
+        "row": 10,
+        "sheet_id": "sheet_002",
+        "text": "1"
+      },
+      {
+        "confidence": 0.9985164403915405,
+        "row": 11,
+        "sheet_id": "sheet_002",
+        "text": "12"
+      },
+      {
+        "confidence": 0.9995769262313843,
+        "row": 12,
+        "sheet_id": "sheet_002",
+        "text": "13"
+      },
+      {
+        "confidence": 0.9994881749153137,
+        "row": 13,
+        "sheet_id": "sheet_002",
+        "text": "14"
+      },
+      {
+        "confidence": 0.9998965263366699,
+        "row": 14,
+        "sheet_id": "sheet_002",
+        "text": "15"
+      },
+      {
+        "confidence": 0.0,
+        "row": 0,
+        "sheet_id": "sheet_003",
+        "text": ""
+      },
+      {
+        "confidence": 0.9999922513961792,
+        "row": 1,
+        "sheet_id": "sheet_003",
+        "text": "2"
+      },
+      {
+        "confidence": 0.9999926090240479,
+        "row": 2,
+        "sheet_id": "sheet_003",
+        "text": "3"
+      },
+      {
+        "confidence": 0.9990108013153076,
+        "row": 3,
+        "sheet_id": "sheet_003",
+        "text": "4"
+      },
+      {
+        "confidence": 0.999994158744812,
+        "row": 4,
+        "sheet_id": "sheet_003",
+        "text": "5"
+      },
+      {
+        "confidence": 0.9999340772628784,
+        "row": 5,
+        "sheet_id": "sheet_003",
+        "text": "6"
+      },
+      {
+        "confidence": 0.9999852180480957,
+        "row": 6,
+        "sheet_id": "sheet_003",
+        "text": "7"
+      },
+      {
+        "confidence": 0.9999942779541016,
+        "row": 7,
+        "sheet_id": "sheet_003",
+        "text": "8"
+      },
+      {
+        "confidence": 0.995854914188385,
+        "row": 8,
+        "sheet_id": "sheet_003",
+        "text": "9"
+      },
+      {
+        "confidence": 0.9999540448188782,
+        "row": 9,
+        "sheet_id": "sheet_003",
+        "text": "10"
+      },
+      {
+        "confidence": 0.9993306398391724,
+        "row": 10,
+        "sheet_id": "sheet_003",
+        "text": "11"
+      },
+      {
+        "confidence": 0.9999864101409912,
+        "row": 11,
+        "sheet_id": "sheet_003",
+        "text": "12"
+      },
+      {
+        "confidence": 0.9999902248382568,
+        "row": 12,
+        "sheet_id": "sheet_003",
+        "text": "13"
+      },
+      {
+        "confidence": 0.9999539852142334,
+        "row": 13,
+        "sheet_id": "sheet_003",
+        "text": "14"
+      },
+      {
+        "confidence": 0.9986317157745361,
+        "row": 14,
+        "sheet_id": "sheet_003",
+        "text": "15"
+      },
+      {
+        "confidence": 0.9630304574966431,
+        "row": 0,
+        "sheet_id": "sheet_004",
+        "text": "1"
+      },
+      {
+        "confidence": 0.9999936819076538,
+        "row": 1,
+        "sheet_id": "sheet_004",
+        "text": "2"
+      },
+      {
+        "confidence": 0.9999973773956299,
+        "row": 2,
+        "sheet_id": "sheet_004",
+        "text": "3"
+      },
+      {
+        "confidence": 0.9998311996459961,
+        "row": 3,
+        "sheet_id": "sheet_004",
+        "text": "4"
+      },
+      {
+        "confidence": 0.9999915361404419,
+        "row": 4,
+        "sheet_id": "sheet_004",
+        "text": "5"
+      },
+      {
+        "confidence": 0.7773160934448242,
+        "row": 5,
+        "sheet_id": "sheet_004",
+        "text": "9"
+      },
+      {
+        "confidence": 0.9998127818107605,
+        "row": 6,
+        "sheet_id": "sheet_004",
+        "text": "7"
+      },
+      {
+        "confidence": 0.9999871253967285,
+        "row": 7,
+        "sheet_id": "sheet_004",
+        "text": "8"
+      },
+      {
+        "confidence": 0.9906743168830872,
+        "row": 8,
+        "sheet_id": "sheet_004",
+        "text": "9"
+      },
+      {
+        "confidence": 0.9999129772186279,
+        "row": 9,
+        "sheet_id": "sheet_004",
+        "text": "10"
+      },
+      {
+        "confidence": 0.8864700794219971,
+        "row": 10,
+        "sheet_id": "sheet_004",
+        "text": "\u4e8c"
+      },
+      {
+        "confidence": 0.9932993650436401,
+        "row": 0,
+        "sheet_id": "sheet_005",
+        "text": "1"
+      },
+      {
+        "confidence": 0.9999933242797852,
+        "row": 1,
+        "sheet_id": "sheet_005",
+        "text": "2"
+      },
+      {
+        "confidence": 0.9715905785560608,
+        "row": 2,
+        "sheet_id": "sheet_005",
+        "text": "3 7"
+      },
+      {
+        "confidence": 0.9999715089797974,
+        "row": 3,
+        "sheet_id": "sheet_005",
+        "text": "4"
+      },
+      {
+        "confidence": 0.9999938011169434,
+        "row": 4,
+        "sheet_id": "sheet_005",
+        "text": "5"
+      },
+      {
+        "confidence": 0.9999785423278809,
+        "row": 5,
+        "sheet_id": "sheet_005",
+        "text": "6"
+      },
+      {
+        "confidence": 0.9999915361404419,
+        "row": 6,
+        "sheet_id": "sheet_005",
+        "text": "7"
+      },
+      {
+        "confidence": 0.9999806880950928,
+        "row": 7,
+        "sheet_id": "sheet_005",
+        "text": "8"
+      },
+      {
+        "confidence": 0.9999732971191406,
+        "row": 8,
+        "sheet_id": "sheet_005",
+        "text": "9"
+      },
+      {
+        "confidence": 0.9999954104423523,
+        "row": 9,
+        "sheet_id": "sheet_005",
+        "text": "10"
+      },
+      {
+        "confidence": 0.999790608882904,
+        "row": 10,
+        "sheet_id": "sheet_005",
+        "text": "11"
+      },
+      {
+        "confidence": 0.9999961853027344,
+        "row": 11,
+        "sheet_id": "sheet_005",
+        "text": "12"
+      },
+      {
+        "confidence": 0.9999956488609314,
+        "row": 12,
+        "sheet_id": "sheet_005",
+        "text": "13"
+      },
+      {
+        "confidence": 0.999945878982544,
+        "row": 13,
+        "sheet_id": "sheet_005",
+        "text": "14"
+      },
+      {
+        "confidence": 0.999987006187439,
+        "row": 14,
+        "sheet_id": "sheet_005",
+        "text": "15"
+      }
+    ],
+    "effective_value_records": 1,
+    "elapsed_seconds": 66.42632086399999,
+    "fixture_ids": [
+      "sheet_001",
+      "sheet_002",
+      "sheet_003",
+      "sheet_004",
+      "sheet_005"
+    ],
+    "fresh_target_records": 0,
+    "model": "PP-OCRv6_medium_det + PP-OCRv6_medium_rec",
+    "paddleocr_version": "3.7.0",
+    "paddlepaddle_version": "3.3.1",
+    "provenance": [
+      {
+        "effective_value": "2026-08-07",
+        "left_anchor": {
+          "raw_date": "5/8/26",
+          "raw_ds_no": {
+            "confidence": 0.9999518394470215,
+            "text": "5"
+          },
+          "row": 4
+        },
+        "raw_ocr_confidence": 0.8447198867797852,
+        "raw_ocr_text": "718126",
+        "reconstructed_confidence": null,
+        "right_anchor": {
+          "raw_date": "8/8/26",
+          "raw_ds_no": {
+            "confidence": 0.9999793767929077,
+            "text": "8"
+          },
+          "row": 7
+        },
+        "row": 6,
+        "row_ds_no": {
+          "confidence": 0.9999262094497681,
+          "text": "7"
+        },
+        "sheet_id": "sheet_001",
+        "source": "reconstructed_between_ocr_anchors"
+      }
+    ],
+    "report_scope": "213 date/start_time/close_time records from 781-record comparison",
+    "scorer": "tests/support/baseline_scoring.py (unchanged)",
+    "source_baseline": "docs/baselines/ppocrv6-baseline.json",
+    "target_fields": [
+      "close_time",
+      "date",
+      "start_time"
+    ],
+    "variant": "bounded_recovery"
+  },
+  "records": [
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.09999999999999998, "confidence": 0.868044376373291, "elapsed_ms": 827.8110420014855, "field_name": "date", "ground_truth": "2026-08-01", "ocr_text": "1/8/26", "raw_exact": false, "row": 0, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.5, "confidence": 0.8696174621582031, "elapsed_ms": 920.2343329998257, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:0090", "raw_exact": false, "row": 0, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.0, "elapsed_ms": 602.273750000677, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "", "raw_exact": false, "row": 0, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9861352443695068, "elapsed_ms": 751.3792500012642, "field_name": "date", "ground_truth": "2026-08-02", "ocr_text": "218/26", "raw_exact": false, "row": 1, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.16666666666666663, "confidence": 0.8777936100959778, "elapsed_ms": 448.22395899973344, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "810\u00b09m", "raw_exact": false, "row": 1, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9896200299263, "elapsed_ms": 387.81008399928396, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8.00", "raw_exact": false, "row": 1, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9952347874641418, "elapsed_ms": 674.7424579989456, "field_name": "date", "ground_truth": "2026-08-03", "ocr_text": "318/26", "raw_exact": false, "row": 2, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.375, "confidence": 0.4116733968257904, "elapsed_ms": 991.4174580007966, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00 Am7", "raw_exact": false, "row": 2, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.0, "elapsed_ms": 172.3227919992496, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "", "raw_exact": false, "row": 2, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.09999999999999998, "confidence": 0.9953131079673767, "elapsed_ms": 810.0354170001083, "field_name": "date", "ground_truth": "2026-08-04", "ocr_text": "4/8/26", "raw_exact": false, "row": 3, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.7027119398117065, "elapsed_ms": 438.38137599959737, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "(90)", "raw_exact": false, "row": 3, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9779875874519348, "elapsed_ms": 694.4251669992809, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8:00", "raw_exact": false, "row": 3, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.09999999999999998, "confidence": 0.9749523997306824, "elapsed_ms": 532.2576260005007, "field_name": "date", "ground_truth": "2026-08-05", "ocr_text": "5/8/26", "raw_exact": false, "row": 4, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.33333333333333337, "confidence": 0.5931365489959717, "elapsed_ms": 866.5337090005778, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00 9107", "raw_exact": false, "row": 4, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.0, "elapsed_ms": 168.24724999969476, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "", "raw_exact": false, "row": 4, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9282644391059875, "elapsed_ms": 827.2271259993431, "field_name": "date", "ground_truth": "2026-08-06", "ocr_text": "618/26", "raw_exact": false, "row": 5, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.2857142857142857, "confidence": 0.9902114272117615, "elapsed_ms": 875.7702080001764, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8100 Am", "raw_exact": false, "row": 5, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.8617809414863586, "elapsed_ms": 703.1958749994374, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 5, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.8447198867797852, "effective_canonical_exact": true, "effective_char_similarity": 1.0, "effective_raw_exact": true, "effective_source": "reconstructed_between_ocr_anchors", "effective_value": "2026-08-07", "elapsed_ms": 612.1480419988075, "field_name": "date", "ground_truth": "2026-08-07", "ocr_text": "718126", "raw_exact": false, "reconstructed_confidence": null, "row": 6, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4285714285714286, "confidence": 0.950080931186676, "elapsed_ms": 819.6360420006386, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00 9m", "raw_exact": false, "row": 6, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9630575776100159, "elapsed_ms": 396.9279999982973, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8100", "raw_exact": false, "row": 6, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.09999999999999998, "confidence": 0.9146604537963867, "elapsed_ms": 524.0295420007897, "field_name": "date", "ground_truth": "2026-08-08", "ocr_text": "8/8/26", "raw_exact": false, "row": 7, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.16666666666666663, "confidence": 0.928620457649231, "elapsed_ms": 810.9504170006403, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "800 9m", "raw_exact": false, "row": 7, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.0, "elapsed_ms": 161.3315419999708, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "", "raw_exact": false, "row": 7, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.09999999999999998, "confidence": 0.8895828723907471, "elapsed_ms": 375.6230830003915, "field_name": "date", "ground_truth": "2026-08-09", "ocr_text": "9/8/26", "raw_exact": false, "row": 8, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4285714285714286, "confidence": 0.6035628914833069, "elapsed_ms": 726.0133760009921, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00 Ap", "raw_exact": false, "row": 8, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.33333333333333337, "confidence": 0.9548811316490173, "elapsed_ms": 1179.929792000621, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8:00 3", "raw_exact": false, "row": 8, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9973854422569275, "elapsed_ms": 373.3016250007495, "field_name": "date", "ground_truth": "2026-08-10", "ocr_text": "108/26", "raw_exact": false, "row": 9, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.4285714285714286, "confidence": 0.8414095640182495, "elapsed_ms": 744.0793330006272, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00 Am", "raw_exact": false, "row": 9, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.9269366264343262, "elapsed_ms": 508.0522499993094, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8.00", "raw_exact": false, "row": 9, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9557502269744873, "elapsed_ms": 473.92387600120855, "field_name": "date", "ground_truth": "2026-08-11", "ocr_text": "118/", "raw_exact": false, "row": 10, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4285714285714286, "confidence": 0.9194809794425964, "elapsed_ms": 759.0795420001086, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00 ar", "raw_exact": false, "row": 10, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.33333333333333337, "confidence": 0.9094789028167725, "elapsed_ms": 1322.7533329991275, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8.00 0", "raw_exact": false, "row": 10, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9836367964744568, "elapsed_ms": 361.47954199987, "field_name": "date", "ground_truth": "2026-08-12", "ocr_text": "12/8/2", "raw_exact": false, "row": 11, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.16666666666666663, "confidence": 0.9150490760803223, "elapsed_ms": 941.7292510006519, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": ":00 Am", "raw_exact": false, "row": 11, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.7565193772315979, "elapsed_ms": 343.38449999995646, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8.0", "raw_exact": false, "row": 11, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.8295283913612366, "elapsed_ms": 470.0228750007227, "field_name": "date", "ground_truth": "2026-08-13", "ocr_text": "363/8/26", "raw_exact": false, "row": 12, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.5169833898544312, "elapsed_ms": 1323.705708999114, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "Am 6:00 8m", "raw_exact": false, "row": 12, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.8713210225105286, "elapsed_ms": 633.9884589997382, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "801", "raw_exact": false, "row": 12, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.8432765603065491, "elapsed_ms": 406.7273340006068, "field_name": "date", "ground_truth": "2026-08-14", "ocr_text": "4H/8/2", "raw_exact": false, "row": 13, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.2857142857142857, "confidence": 0.39570528268814087, "elapsed_ms": 847.9594999989786, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8100 Al", "raw_exact": false, "row": 13, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.0, "elapsed_ms": 279.4307910007774, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "", "raw_exact": false, "row": 13, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9469453692436218, "elapsed_ms": 500.6200000007084, "field_name": "date", "ground_truth": "2026-08-15", "ocr_text": "515/8/2", "raw_exact": false, "row": 14, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.2222222222222222, "confidence": 0.1545233428478241, "elapsed_ms": 1532.1629170011875, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "Aa 800 Br", "raw_exact": false, "row": 14, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.33333333333333337, "confidence": 0.6288487315177917, "elapsed_ms": 841.7795009991096, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8.00 0", "raw_exact": false, "row": 14, "sheet_id": "sheet_001"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.0, "elapsed_ms": 318.69804199959617, "field_name": "date", "ground_truth": "2026-08-16", "ocr_text": "", "raw_exact": false, "row": 0, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8814295530319214, "elapsed_ms": 407.7684580006462, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8100", "raw_exact": false, "row": 0, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9964113235473633, "elapsed_ms": 395.43125000091095, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8100", "raw_exact": false, "row": 0, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9143834114074707, "elapsed_ms": 762.5060829996073, "field_name": "date", "ground_truth": "2026-08-17", "ocr_text": "178126", "raw_exact": false, "row": 1, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8996729254722595, "elapsed_ms": 364.9403330000496, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8.00", "raw_exact": false, "row": 1, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9799978733062744, "elapsed_ms": 400.1322079984675, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8.00", "raw_exact": false, "row": 1, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9196704626083374, "elapsed_ms": 414.05858299913234, "field_name": "date", "ground_truth": "2026-08-18", "ocr_text": ".1818126", "raw_exact": false, "row": 2, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9963170289993286, "elapsed_ms": 374.54216700098186, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8100", "raw_exact": false, "row": 2, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.962958812713623, "elapsed_ms": 387.0662080007605, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8.00", "raw_exact": false, "row": 2, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9541101455688477, "elapsed_ms": 394.6722080017935, "field_name": "date", "ground_truth": "2026-08-19", "ocr_text": "918126", "raw_exact": false, "row": 3, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9797779321670532, "elapsed_ms": 553.9601250002306, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8.00", "raw_exact": false, "row": 3, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9543831944465637, "elapsed_ms": 492.9492499995831, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8100", "raw_exact": false, "row": 3, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.5, "confidence": 0.9783334732055664, "elapsed_ms": 517.3718330006523, "field_name": "date", "ground_truth": "2026-08-20", "ocr_text": "2018120", "raw_exact": false, "row": 4, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9927171468734741, "elapsed_ms": 491.37887500000943, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8.00", "raw_exact": false, "row": 4, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8902634382247925, "elapsed_ms": 353.9779999991879, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8100", "raw_exact": false, "row": 4, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9551658630371094, "elapsed_ms": 386.1577089992352, "field_name": "date", "ground_truth": "2026-08-21", "ocr_text": "211812", "raw_exact": false, "row": 5, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9258276224136353, "elapsed_ms": 411.5233749998879, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8200", "raw_exact": false, "row": 5, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.9179946780204773, "elapsed_ms": 340.8422499996959, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 5, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.9957044124603271, "elapsed_ms": 555.2864169985696, "field_name": "date", "ground_truth": "2026-08-22", "ocr_text": "221812", "raw_exact": false, "row": 6, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8958412408828735, "elapsed_ms": 412.9020420004963, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8.00", "raw_exact": false, "row": 6, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8966174125671387, "elapsed_ms": 342.8909170015686, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8200", "raw_exact": false, "row": 6, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9569804072380066, "elapsed_ms": 394.67050000166637, "field_name": "date", "ground_truth": "2026-08-23", "ocr_text": "231818", "raw_exact": false, "row": 7, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8026995658874512, "elapsed_ms": 587.8669579997222, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8.00", "raw_exact": false, "row": 7, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8676642179489136, "elapsed_ms": 374.1604159986309, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "-8200", "raw_exact": false, "row": 7, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9900265336036682, "elapsed_ms": 377.9863330000808, "field_name": "date", "ground_truth": "2026-08-24", "ocr_text": "241812", "raw_exact": false, "row": 8, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8790640234947205, "elapsed_ms": 362.7228749992355, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8.00", "raw_exact": false, "row": 8, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8593082427978516, "elapsed_ms": 384.8238749997108, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8!00", "raw_exact": false, "row": 8, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9224165678024292, "elapsed_ms": 420.351083001151, "field_name": "date", "ground_truth": "2026-08-25", "ocr_text": "2518120", "raw_exact": false, "row": 9, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.6, "confidence": 0.8006489276885986, "elapsed_ms": 340.721417000168, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:0", "raw_exact": false, "row": 9, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.9908843636512756, "elapsed_ms": 408.87916700012283, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "810", "raw_exact": false, "row": 9, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.9216052293777466, "elapsed_ms": 367.7817090010649, "field_name": "date", "ground_truth": "2026-08-26", "ocr_text": "2018120", "raw_exact": false, "row": 10, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.9877844452857971, "elapsed_ms": 351.31229199942027, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8.0", "raw_exact": false, "row": 10, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.8675839900970459, "elapsed_ms": 378.9788750000298, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "78.0", "raw_exact": false, "row": 10, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9686610102653503, "elapsed_ms": 376.9860829997924, "field_name": "date", "ground_truth": "2026-08-27", "ocr_text": "271818", "raw_exact": false, "row": 11, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.7700104713439941, "elapsed_ms": 364.16695899970364, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8!0", "raw_exact": false, "row": 11, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9769889712333679, "elapsed_ms": 435.4131249983766, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "881", "raw_exact": false, "row": 11, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9034762382507324, "elapsed_ms": 423.3356670010835, "field_name": "date", "ground_truth": "2026-08-28", "ocr_text": "2818126", "raw_exact": false, "row": 12, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9298083186149597, "elapsed_ms": 368.75029200018616, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8100", "raw_exact": false, "row": 12, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.755197286605835, "elapsed_ms": 939.4140000003972, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8.0 3", "raw_exact": false, "row": 12, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.8535301089286804, "elapsed_ms": 417.929916000503, "field_name": "date", "ground_truth": "2026-08-29", "ocr_text": "2918526", "raw_exact": false, "row": 13, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.8310515284538269, "elapsed_ms": 407.0800829995278, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8.0", "raw_exact": false, "row": 13, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.8293838500976562, "elapsed_ms": 343.78441700027906, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "80", "raw_exact": false, "row": 13, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9829239249229431, "elapsed_ms": 532.1679999997286, "field_name": "date", "ground_truth": "2026-08-30", "ocr_text": "3018126", "raw_exact": false, "row": 14, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.8170579075813293, "elapsed_ms": 361.6271249993588, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8.", "raw_exact": false, "row": 14, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.8425867557525635, "elapsed_ms": 443.53862599928107, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "58.0", "raw_exact": false, "row": 14, "sheet_id": "sheet_002"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9713924527168274, "elapsed_ms": 430.07329200008826, "field_name": "date", "ground_truth": "2026-08-16", "ocr_text": "1618126", "raw_exact": false, "row": 0, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.9909700155258179, "elapsed_ms": 442.3826669990376, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "Am", "raw_exact": false, "row": 0, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.9555782675743103, "elapsed_ms": 350.8237090009061, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 0, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.979773223400116, "elapsed_ms": 476.15604199927475, "field_name": "date", "ground_truth": "2026-08-17", "ocr_text": "1718126", "raw_exact": false, "row": 1, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.2857142857142857, "confidence": 0.9801377058029175, "elapsed_ms": 779.1802920000919, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8100 Am", "raw_exact": false, "row": 1, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.9336727857589722, "elapsed_ms": 528.8091250004072, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8100", "raw_exact": false, "row": 1, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9901321530342102, "elapsed_ms": 394.8425420003332, "field_name": "date", "ground_truth": "2026-08-18", "ocr_text": "1818126", "raw_exact": false, "row": 2, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.839093804359436, "elapsed_ms": 368.22495799970056, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "AM", "raw_exact": false, "row": 2, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.9997608661651611, "elapsed_ms": 328.1188330001896, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8100", "raw_exact": false, "row": 2, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9984645247459412, "elapsed_ms": 555.4013750006561, "field_name": "date", "ground_truth": "2026-08-19", "ocr_text": "1918126", "raw_exact": false, "row": 3, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.2857142857142857, "confidence": 0.9778704643249512, "elapsed_ms": 786.2604590009141, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8200 Am", "raw_exact": false, "row": 3, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.5808749794960022, "elapsed_ms": 727.1775000008347, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8.98 82000", "raw_exact": false, "row": 3, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.9423999786376953, "elapsed_ms": 385.2129170008993, "field_name": "date", "ground_truth": "2026-08-20", "ocr_text": "2018/26", "raw_exact": false, "row": 4, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8940474987030029, "elapsed_ms": 439.6670839996659, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8100", "raw_exact": false, "row": 4, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.6938668489456177, "elapsed_ms": 752.4459169999318, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8.00 61000", "raw_exact": false, "row": 4, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9975614547729492, "elapsed_ms": 406.4217089999147, "field_name": "date", "ground_truth": "2026-08-21", "ocr_text": "218126", "raw_exact": false, "row": 5, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.9724029302597046, "elapsed_ms": 392.24929100055306, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 5, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.9819045066833496, "elapsed_ms": 428.67083300006925, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8100", "raw_exact": false, "row": 5, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.8780183792114258, "elapsed_ms": 355.2613760002714, "field_name": "date", "ground_truth": "2026-08-22", "ocr_text": "22/8120", "raw_exact": false, "row": 6, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6666666666666667, "confidence": 0.8530762195587158, "elapsed_ms": 423.06316699978197, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "18.:00", "raw_exact": false, "row": 6, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9380754232406616, "elapsed_ms": 377.0847079995292, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8:00", "raw_exact": false, "row": 6, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.8676006197929382, "elapsed_ms": 348.9289999997709, "field_name": "date", "ground_truth": "2026-08-23", "ocr_text": "231820", "raw_exact": false, "row": 7, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.9917737245559692, "elapsed_ms": 712.8732090004632, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 7, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.977889895439148, "elapsed_ms": 332.676124999125, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 7, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9125981330871582, "elapsed_ms": 428.6415410006157, "field_name": "date", "ground_truth": "2026-08-24", "ocr_text": "2418120", "raw_exact": false, "row": 8, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.9995095133781433, "elapsed_ms": 367.6672500005225, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 8, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.25, "confidence": 0.6658762693405151, "elapsed_ms": 1258.413293000558, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8 0 pr FL00A", "raw_exact": false, "row": 8, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9188386797904968, "elapsed_ms": 507.7843330000178, "field_name": "date", "ground_truth": "2026-08-25", "ocr_text": "257812", "raw_exact": false, "row": 9, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8807154893875122, "elapsed_ms": 368.7672919986653, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8100", "raw_exact": false, "row": 9, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9982157349586487, "elapsed_ms": 411.4622920005786, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8:00", "raw_exact": false, "row": 9, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.9645118713378906, "elapsed_ms": 383.30820800001675, "field_name": "date", "ground_truth": "2026-08-26", "ocr_text": "261812", "raw_exact": false, "row": 10, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.8727717399597168, "elapsed_ms": 350.3572500012524, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 10, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8844040632247925, "elapsed_ms": 319.65074999970966, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8:00", "raw_exact": false, "row": 10, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9143346548080444, "elapsed_ms": 373.94858399966324, "field_name": "date", "ground_truth": "2026-08-27", "ocr_text": "2718120", "raw_exact": false, "row": 11, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9984930753707886, "elapsed_ms": 462.59158400062006, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8100", "raw_exact": false, "row": 11, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.8235349655151367, "elapsed_ms": 499.12295899957826, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8!00", "raw_exact": false, "row": 11, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9885737299919128, "elapsed_ms": 441.01887499891745, "field_name": "date", "ground_truth": "2026-08-28", "ocr_text": "281812", "raw_exact": false, "row": 12, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.9789873361587524, "elapsed_ms": 386.2744580001163, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 12, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.6908294558525085, "elapsed_ms": 384.7752509991551, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "6:008", "raw_exact": false, "row": 12, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9942837953567505, "elapsed_ms": 367.42441699971096, "field_name": "date", "ground_truth": "2026-08-29", "ocr_text": "2918", "raw_exact": false, "row": 13, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.8994741439819336, "elapsed_ms": 394.9621669999033, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 13, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.5555555555555556, "confidence": 0.6301934123039246, "elapsed_ms": 865.1051260003442, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8!0 8:00A", "raw_exact": false, "row": 13, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.955989420413971, "elapsed_ms": 387.3366249990795, "field_name": "date", "ground_truth": "2026-08-30", "ocr_text": "301818", "raw_exact": false, "row": 14, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9637879133224487, "elapsed_ms": 564.8216669997055, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8100", "raw_exact": false, "row": 14, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.8763226270675659, "elapsed_ms": 365.64712499966845, "field_name": "close_time", "ground_truth": "08:00", "ocr_text": "8109", "raw_exact": false, "row": 14, "sheet_id": "sheet_003"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.8459469676017761, "elapsed_ms": 535.8160830000998, "field_name": "date", "ground_truth": "2026-08-01", "ocr_text": "01108/4", "raw_exact": false, "row": 0, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.5, "confidence": 0.7650680541992188, "elapsed_ms": 349.1448759996274, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:000m", "raw_exact": false, "row": 0, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9153714776039124, "elapsed_ms": 378.1535409998469, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "00Pm", "raw_exact": false, "row": 0, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9239530563354492, "elapsed_ms": 572.285042000658, "field_name": "date", "ground_truth": "2026-08-02", "ocr_text": "0218126", "raw_exact": false, "row": 1, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.8232779502868652, "elapsed_ms": 378.49087600079656, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:0An", "raw_exact": false, "row": 1, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9944279193878174, "elapsed_ms": 791.9655420009803, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "200", "raw_exact": false, "row": 1, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9073532223701477, "elapsed_ms": 401.7252499997994, "field_name": "date", "ground_truth": "2026-08-03", "ocr_text": "0318126", "raw_exact": false, "row": 2, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8909078240394592, "elapsed_ms": 474.60954199959815, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8200", "raw_exact": false, "row": 2, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9824461936950684, "elapsed_ms": 339.0737909994641, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "200", "raw_exact": false, "row": 2, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.8316287994384766, "elapsed_ms": 373.3887919988774, "field_name": "date", "ground_truth": "2026-08-04", "ocr_text": "oulske", "raw_exact": false, "row": 3, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8140522837638855, "elapsed_ms": 352.1887090009841, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "800", "raw_exact": false, "row": 3, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 1.0, "confidence": 0.9775563478469849, "elapsed_ms": 367.2414590000699, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "20:00", "raw_exact": true, "row": 3, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.693388819694519, "elapsed_ms": 397.31599999868195, "field_name": "date", "ground_truth": "2026-08-05", "ocr_text": "05/0124", "raw_exact": false, "row": 4, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9640395641326904, "elapsed_ms": 729.183584000566, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "800", "raw_exact": false, "row": 4, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 1.0, "confidence": 0.9974929094314575, "elapsed_ms": 508.3754589995806, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "20:00", "raw_exact": true, "row": 4, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.8855611085891724, "elapsed_ms": 1042.7960840006563, "field_name": "date", "ground_truth": "2026-08-06", "ocr_text": "0618/26", "raw_exact": false, "row": 5, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8127694725990295, "elapsed_ms": 497.40770800053724, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:10", "raw_exact": false, "row": 5, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 1.0, "confidence": 0.9958898425102234, "elapsed_ms": 398.77070900001854, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "20:00", "raw_exact": true, "row": 5, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.946573793888092, "elapsed_ms": 360.93458400137024, "field_name": "date", "ground_truth": "2026-08-07", "ocr_text": "0218126", "raw_exact": false, "row": 6, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.609250009059906, "elapsed_ms": 309.93300000045565, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "820", "raw_exact": false, "row": 6, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 1.0, "confidence": 0.9572211503982544, "elapsed_ms": 331.89087500068126, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "20:00", "raw_exact": true, "row": 6, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.8608244061470032, "elapsed_ms": 372.63775000064925, "field_name": "date", "ground_truth": "2026-08-08", "ocr_text": "08/08k6", "raw_exact": false, "row": 7, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.8741326332092285, "elapsed_ms": 378.04091700127174, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 7, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.8, "confidence": 0.9431797862052917, "elapsed_ms": 421.3042920000589, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "20.00", "raw_exact": false, "row": 7, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9997162222862244, "elapsed_ms": 435.3355829989596, "field_name": "date", "ground_truth": "2026-08-09", "ocr_text": "0918126", "raw_exact": false, "row": 8, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.8859162926673889, "elapsed_ms": 402.9941669996333, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 8, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.8, "confidence": 0.9138652086257935, "elapsed_ms": 347.5239159997727, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "20100", "raw_exact": false, "row": 8, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9907126426696777, "elapsed_ms": 642.5364169990644, "field_name": "date", "ground_truth": "2026-08-10", "ocr_text": "018126", "raw_exact": false, "row": 9, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.9152339696884155, "elapsed_ms": 527.781042001152, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 9, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 1.0, "confidence": 0.9428979754447937, "elapsed_ms": 408.5612910002965, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "20:00", "raw_exact": true, "row": 9, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9070456624031067, "elapsed_ms": 518.3202499993058, "field_name": "date", "ground_truth": "2026-08-11", "ocr_text": "118126", "raw_exact": false, "row": 10, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.7180421352386475, "elapsed_ms": 387.31866699890816, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8200", "raw_exact": false, "row": 10, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9812188148498535, "elapsed_ms": 418.839834001119, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "20160", "raw_exact": false, "row": 10, "sheet_id": "sheet_004"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9954811930656433, "elapsed_ms": 781.2722499984375, "field_name": "date", "ground_truth": "2026-08-01", "ocr_text": "118126", "raw_exact": false, "row": 0, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.9447662234306335, "elapsed_ms": 471.46766699916043, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 0, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.855363130569458, "elapsed_ms": 416.4572500012582, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8:00", "raw_exact": false, "row": 0, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9298152923583984, "elapsed_ms": 729.5942090004246, "field_name": "date", "ground_truth": "2026-08-02", "ocr_text": "918126", "raw_exact": false, "row": 1, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 0.8, "confidence": 0.8580363988876343, "elapsed_ms": 479.32099999889033, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:00", "raw_exact": false, "row": 1, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.8525813817977905, "elapsed_ms": 459.5420420009759, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8100", "raw_exact": false, "row": 1, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9971866607666016, "elapsed_ms": 781.9173749994661, "field_name": "date", "ground_truth": "2026-08-03", "ocr_text": "31812", "raw_exact": false, "row": 2, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9468421936035156, "elapsed_ms": 390.64650000000256, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8.00", "raw_exact": false, "row": 2, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.8648843169212341, "elapsed_ms": 726.0685010005545, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8.00", "raw_exact": false, "row": 2, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9974530339241028, "elapsed_ms": 455.3079590004927, "field_name": "date", "ground_truth": "2026-08-04", "ocr_text": "918126", "raw_exact": false, "row": 3, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9159590005874634, "elapsed_ms": 468.523625000671, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8:000", "raw_exact": false, "row": 3, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 1.0, "confidence": 0.9910022616386414, "elapsed_ms": 427.5692920000438, "field_name": "close_time", "ground_truth": "19:35", "ocr_text": "19:35", "raw_exact": true, "row": 3, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9312753677368164, "elapsed_ms": 424.6187919998192, "field_name": "date", "ground_truth": "2026-08-05", "ocr_text": "51812", "raw_exact": false, "row": 4, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 1.0, "confidence": 0.9933843612670898, "elapsed_ms": 447.37704200088046, "field_name": "start_time", "ground_truth": "10:00", "ocr_text": "10:00", "raw_exact": true, "row": 4, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.8, "confidence": 0.9521773457527161, "elapsed_ms": 755.9403340001154, "field_name": "close_time", "ground_truth": "18:30", "ocr_text": "18:80", "raw_exact": false, "row": 4, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.8558576703071594, "elapsed_ms": 380.8562920003169, "field_name": "date", "ground_truth": "2026-08-06", "ocr_text": "618126", "raw_exact": false, "row": 5, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.9758445620536804, "elapsed_ms": 394.71845899970504, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8100", "raw_exact": false, "row": 5, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.6, "confidence": 0.8898792266845703, "elapsed_ms": 382.8713330003666, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8:00", "raw_exact": false, "row": 5, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.9908607602119446, "elapsed_ms": 436.8008750006993, "field_name": "date", "ground_truth": "2026-08-07", "ocr_text": "718120", "raw_exact": false, "row": 6, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 1.0, "confidence": 0.9981901049613953, "elapsed_ms": 448.040041999775, "field_name": "start_time", "ground_truth": "10:30", "ocr_text": "10:30", "raw_exact": true, "row": 6, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 1.0, "confidence": 0.9251506924629211, "elapsed_ms": 410.7364579995192, "field_name": "close_time", "ground_truth": "19:30", "ocr_text": "19:30", "raw_exact": true, "row": 6, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.8687620162963867, "elapsed_ms": 531.7988759998116, "field_name": "date", "ground_truth": "2026-08-08", "ocr_text": "818186", "raw_exact": false, "row": 7, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.8521478176116943, "elapsed_ms": 439.9139589986589, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8102", "raw_exact": false, "row": 7, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.9147104024887085, "elapsed_ms": 371.6800419988431, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8100", "raw_exact": false, "row": 7, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.09999999999999998, "confidence": 0.7186582684516907, "elapsed_ms": 452.97945799939043, "field_name": "date", "ground_truth": "2026-08-09", "ocr_text": "918|20", "raw_exact": false, "row": 8, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.5, "confidence": 0.7552635669708252, "elapsed_ms": 411.56704199966043, "field_name": "start_time", "ground_truth": "10:00", "ocr_text": "1o! 00", "raw_exact": false, "row": 8, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.0, "elapsed_ms": 275.68874999997206, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "", "raw_exact": false, "row": 8, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9073771238327026, "elapsed_ms": 695.3845000007277, "field_name": "date", "ground_truth": "2026-08-10", "ocr_text": "1018126", "raw_exact": false, "row": 9, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": true, "char_similarity": 1.0, "confidence": 0.9932798147201538, "elapsed_ms": 672.3056669998186, "field_name": "start_time", "ground_truth": "10:00", "ocr_text": "10:00", "raw_exact": true, "row": 9, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.8981286287307739, "elapsed_ms": 531.7862499996409, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8100", "raw_exact": false, "row": 9, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.8903401494026184, "elapsed_ms": 752.6939590006805, "field_name": "date", "ground_truth": "2026-08-11", "ocr_text": "11181\u2103", "raw_exact": false, "row": 10, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.8973630666732788, "elapsed_ms": 429.10924999887357, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "An", "raw_exact": false, "row": 10, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.5141294598579407, "elapsed_ms": 769.7488750000048, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "O Pm", "raw_exact": false, "row": 10, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.999176025390625, "elapsed_ms": 536.362167000334, "field_name": "date", "ground_truth": "2026-08-12", "ocr_text": "12-82", "raw_exact": false, "row": 11, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.0, "elapsed_ms": 289.38287499840953, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "", "raw_exact": false, "row": 11, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.8673185706138611, "elapsed_ms": 833.7160419996508, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8:0 A", "raw_exact": false, "row": 11, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.30000000000000004, "confidence": 0.9995829463005066, "elapsed_ms": 773.3924589992967, "field_name": "date", "ground_truth": "2026-08-13", "ocr_text": "13-8-2", "raw_exact": false, "row": 12, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.42001914978027344, "elapsed_ms": 566.4974999999686, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "0", "raw_exact": false, "row": 12, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.25, "confidence": 0.7050747275352478, "elapsed_ms": 1685.3560419986024, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "8  0 8 0", "raw_exact": false, "row": 12, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9424169659614563, "elapsed_ms": 460.5262910008605, "field_name": "date", "ground_truth": "2026-08-14", "ocr_text": "161-82", "raw_exact": false, "row": 13, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.4, "confidence": 0.6581810116767883, "elapsed_ms": 813.5334999988117, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8. 0", "raw_exact": false, "row": 13, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.5374722480773926, "elapsed_ms": 407.34162499938975, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "0", "raw_exact": false, "row": 13, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.19999999999999996, "confidence": 0.9847697019577026, "elapsed_ms": 576.1189589993592, "field_name": "date", "ground_truth": "2026-08-15", "ocr_text": "15-82", "raw_exact": false, "row": 14, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.25, "confidence": 0.7294154167175293, "elapsed_ms": 1352.7557510005863, "field_name": "start_time", "ground_truth": "08:00", "ocr_text": "8  00 An", "raw_exact": false, "row": 14, "sheet_id": "sheet_005"},
+    {"bucket": "scored", "canonical_exact": false, "char_similarity": 0.0, "confidence": 0.6797230839729309, "elapsed_ms": 1031.9484580013523, "field_name": "close_time", "ground_truth": "20:00", "ocr_text": "9 C P", "raw_exact": false, "row": 14, "sheet_id": "sheet_005"}
+  ]
+}

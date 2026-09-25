@@ -10,7 +10,7 @@ import sys
 import numpy as np
 import pytest
 
-from app.ocr.base import InvalidCellImageError, OCRBackendError, Recognizer
+from app.ocr.base import FieldAwareRecognizer, InvalidCellImageError, OCRBackendError, Recognizer
 from app.ocr.paddle import PaddleOCRRecognizer
 
 CELL_IMAGE = np.zeros((24, 80, 3), dtype=np.uint8)
@@ -39,6 +39,34 @@ def test_paddleocr_recognizer_satisfies_protocol() -> None:
     recognizer = PaddleOCRRecognizer(model=FakePredictor())
 
     assert isinstance(recognizer, Recognizer)
+    assert isinstance(recognizer, FieldAwareRecognizer)
+
+
+def test_time_fields_use_sensitive_detection_but_date_keeps_default() -> None:
+    class RecordingPredictor(FakePredictor):
+        def __init__(self):
+            super().__init__(
+                results=[_result(["8:00"], [0.9], [[[0, 0], [40, 0], [40, 20], [0, 20]]])]
+            )
+            self.options = []
+
+        def predict(self, input: np.ndarray, **kwargs) -> list[dict]:
+            self.options.append(kwargs)
+            return super().predict(input)
+
+    predictor = RecordingPredictor()
+    recognizer = PaddleOCRRecognizer(model=predictor)
+
+    assert recognizer.recognize_field("start_time", CELL_IMAGE) == ("8:00", 0.9)
+    assert recognizer.recognize_field("close_time", CELL_IMAGE) == ("8:00", 0.9)
+    assert recognizer.recognize_field("date", CELL_IMAGE) == ("8:00", 0.9)
+    assert recognizer.recognize(CELL_IMAGE) == ("8:00", 0.9)
+    assert predictor.options == [
+        {"text_det_thresh": 0.1, "text_det_box_thresh": 0.3},
+        {"text_det_thresh": 0.1, "text_det_box_thresh": 0.3},
+        {},
+        {},
+    ]
 
 
 def test_recognizes_single_line() -> None:
