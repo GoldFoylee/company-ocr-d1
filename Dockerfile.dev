@@ -4,11 +4,13 @@ FROM python:3.11-slim
 # packages out of the production image. libgomp1 (GNU OpenMP) is required by
 # paddlepaddle's compute kernels -- without it, `import paddle` fails with
 # "ImportError: libgomp.so.1: cannot open shared object file".
+# LibreOffice Calc recalculates the generated workbook during export validation.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     libgl1 \
     libglib2.0-0 \
     libgomp1 \
+    libreoffice-calc \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
