@@ -1,7 +1,9 @@
 """Run a scanned log sheet through the existing extraction stages.
 
-The recognizer is supplied through the shared protocol. Until real OCR is
-available, callers can pass MockRecognizer without changing this module.
+The recognizer is supplied through the shared protocol (app/ocr/base.py), so
+this module never imports a concrete OCR backend. Callers now pass
+PaddleOCRRecognizer (app/ocr/paddle.py) for real extraction; MockRecognizer
+remains available for tests that need deterministic, instant OCR output.
 """
 
 from collections.abc import Iterable
