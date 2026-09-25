@@ -26,9 +26,13 @@ class Recognizer(Protocol):
     Implementations return recognized text and a normalized confidence score.
     """
 
-    def recognize(self, cell_image: np.ndarray) -> tuple[str, float]:
+    def recognize(
+        self, cell_image: np.ndarray, *, field_name: str | None = None
+    ) -> tuple[str, float]:
         """Recognize a cropped cell image as ``(text, confidence)``.
 
+        ``field_name`` carries the crop tag so a backend can select a field-specific
+        decoder without exposing that choice to the sheet pipeline.
         Confidence must be between 0.0 and 1.0. Implementations should raise
         :class:`InvalidCellImageError` when the input cannot represent an image.
         """

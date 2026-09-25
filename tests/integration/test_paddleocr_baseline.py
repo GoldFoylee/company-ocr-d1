@@ -23,8 +23,9 @@ from pathlib import Path
 import cv2
 import pytest
 
-from app.cropping import FIELD_NAMES, CroppedCell, crop_cells
+from app.cropping import CroppedCell, crop_cells
 from app.grid import detect_cells
+from app.ocr.base import Recognizer
 from app.ocr.paddle import PaddleOCRRecognizer
 from app.preprocessing import preprocess
 from tests.support.baseline_report import RunMetadata, render_json_records, render_markdown_report
@@ -32,6 +33,21 @@ from tests.support.baseline_scoring import ScoredCrop, bucket_counts, build_scor
 
 FIXTURE_DIRECTORY = Path("tests/fixtures/anonymized")
 FIXTURE_IDS = tuple(f"sheet_{number:03d}" for number in range(1, 6))
+# Freeze the fields measured in the recorded baseline. `ds_no` was added to
+# cropping later, after that run, and must not add 71 unmatched records here.
+BASELINE_FIELD_NAMES = (
+    "date",
+    "guest_name",
+    "start_time",
+    "start_km",
+    "close_time",
+    "close_km",
+    "total_km",
+    "total_time",
+    "toll",
+    "parking",
+    "journey_details",
+)
 REPORT_MARKDOWN_PATH = Path("docs/baselines/ppocrv6-baseline.md")
 REPORT_JSON_PATH = Path("docs/baselines/ppocrv6-baseline.json")
 
@@ -56,7 +72,7 @@ def _crop_sheet(sheet_id: str) -> tuple[list[CroppedCell], list[dict]]:
 
 def _score_sheet(
     sheet_id: str,
-    recognizer: PaddleOCRRecognizer,
+    recognizer: Recognizer,
     ocr_cache: dict[tuple[str, int, int], tuple[str, float, float]],
 ) -> list[ScoredCrop]:
     """Score one sheet's crops, reusing one OCR call for toll+parking's shared cell.
@@ -69,6 +85,8 @@ def _score_sheet(
     records: list[ScoredCrop] = []
 
     for crop in crops:
+        if crop.field_name not in BASELINE_FIELD_NAMES:
+            continue
         ground_truth_value = ground_truth_rows[crop.row].get(crop.field_name)
 
         if crop.excluded:
@@ -88,7 +106,7 @@ def _score_sheet(
         cache_key = (sheet_id, crop.row, crop.column)
         if cache_key not in ocr_cache:
             started_at = time.perf_counter()
-            text, confidence = recognizer.recognize(crop.image)
+            text, confidence = recognizer.recognize(crop.image, field_name=crop.field_name)
             elapsed_ms = (time.perf_counter() - started_at) * 1000
             ocr_cache[cache_key] = (text, confidence, elapsed_ms)
         text, confidence, elapsed_ms = ocr_cache[cache_key]
@@ -148,7 +166,7 @@ def test_paddleocr_baseline_against_real_golden_fixtures() -> None:
     total_elapsed = time.perf_counter() - started_at
 
     expected_row_count = sum(len(_load_ground_truth_rows(sheet_id)) for sheet_id in FIXTURE_IDS)
-    assert len(all_records) == expected_row_count * len(FIELD_NAMES)
+    assert len(all_records) == expected_row_count * len(BASELINE_FIELD_NAMES)
     assert sum(bucket_counts(all_records).values()) == len(all_records)
 
     metadata = _run_metadata(model_tier="medium", total_wall_clock_seconds=total_elapsed)

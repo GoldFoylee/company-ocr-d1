@@ -160,7 +160,9 @@ class PaddleOCRRecognizer:
             else _build_predictor(model_tier, _mkldnn_enabled(enable_mkldnn))
         )
 
-    def recognize(self, cell_image: np.ndarray) -> tuple[str, float]:
+    def recognize(
+        self, cell_image: np.ndarray, *, field_name: str | None = None
+    ) -> tuple[str, float]:
         """Recognize a cropped cell image as ``(text, confidence)``.
 
         Returns ``("", 0.0)`` when nothing is recognized -- an honest "found

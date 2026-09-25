@@ -48,9 +48,11 @@ class CountingMockRecognizer(MockRecognizer):
         super().__init__(text=text, confidence=confidence)
         self.calls = 0
 
-    def recognize(self, cell_image: np.ndarray) -> tuple[str, float]:
+    def recognize(
+        self, cell_image: np.ndarray, *, field_name: str | None = None
+    ) -> tuple[str, float]:
         self.calls += 1
-        return super().recognize(cell_image)
+        return super().recognize(cell_image, field_name=field_name)
 
 
 class FixtureDsMockRecognizer(MockRecognizer):
@@ -61,8 +63,10 @@ class FixtureDsMockRecognizer(MockRecognizer):
         self.ds_numbers = ds_numbers
         self.calls = 0
 
-    def recognize(self, cell_image: np.ndarray) -> tuple[str, float]:
-        text, confidence = super().recognize(cell_image)
+    def recognize(
+        self, cell_image: np.ndarray, *, field_name: str | None = None
+    ) -> tuple[str, float]:
+        text, confidence = super().recognize(cell_image, field_name=field_name)
         call_index = self.calls
         self.calls += 1
         if call_index % len(STORED_FIELDS) == 0:

@@ -141,7 +141,7 @@ def run_sheet_pipeline(
             written_paths.append(path)
             if not cv2.imwrite(str(path), crop.image):
                 raise OSError(f"Could not write cell image: {path}")
-            text, confidence = recognizer.recognize(crop.image)
+            text, confidence = recognizer.recognize(crop.image, field_name=crop.field_name)
             row_fields = recognized_by_row.setdefault(crop.row, {})
             if crop.field_name in row_fields:
                 raise ValueError(f"Duplicate {crop.field_name} crop in row {crop.row + 1}")
