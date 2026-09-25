@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import review
+from app.routers import review, sheets
 
 app = FastAPI(title="Draft 1 — Car Log OCR Pipeline")
 
@@ -17,6 +17,7 @@ app.add_middleware(
 )
 
 app.include_router(review.router, prefix="/review", tags=["review"])
+app.include_router(sheets.router, prefix="/sheets", tags=["sheets"])
 app.add_api_route(
     "/sheets/{sheet_id}/verify",
     review.mark_sheet_verified,

@@ -1,6 +1,16 @@
 from datetime import date, datetime
 
-from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, String, Text, func
+from sqlalchemy import (
+    Boolean,
+    CheckConstraint,
+    Date,
+    DateTime,
+    Float,
+    ForeignKey,
+    String,
+    Text,
+    func,
+)
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database import Base
@@ -34,9 +44,13 @@ class Sheet(Base):
 
 class Extraction(Base):
     __tablename__ = "extractions"
+    __table_args__ = (
+        CheckConstraint("row_number >= 1", name="ck_extractions_row_number_positive"),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     sheet_id: Mapped[int] = mapped_column(ForeignKey("sheets.id", ondelete="CASCADE"), index=True)
+    row_number: Mapped[int] = mapped_column(default=1)
     field_name: Mapped[str] = mapped_column(String(255))
     image_crop_ref: Mapped[str] = mapped_column(Text)
     raw_ocr_value: Mapped[str] = mapped_column(Text)

@@ -191,6 +191,7 @@ def run_sheet_pipeline(
                 db.add(
                     Extraction(
                         sheet_id=sheet.id,
+                        row_number=recognized.crop.row + 1,
                         field_name=recognized.crop.field_name,
                         image_crop_ref=str(recognized.path),
                         raw_ocr_value=recognized.text,
