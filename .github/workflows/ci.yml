@@ -41,8 +41,11 @@ jobs:
           cache: "npm"
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install system dependencies (OpenCV)
-        run: sudo apt-get update && sudo apt-get install -y libgl1 libglib2.0-0
+      - name: Install system dependencies (OpenCV and LibreOffice Calc)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1 libglib2.0-0 libreoffice-calc
+          soffice --version
 
       - name: Install Python dependencies
         run: |
