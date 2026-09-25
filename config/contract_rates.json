@@ -1,0 +1,82 @@
+{
+  "_WARNING": "!!! FAKE PLACEHOLDER VALUES ONLY — these vehicle identifiers, modal values, and every contract rate below are invented test data. Replace each vehicle entry with approved real values before any production use. !!!",
+  "fixture_sheet_to_vehicle": {
+    "sheet_001": "FAKE-001",
+    "sheet_002": "FAKE-002",
+    "sheet_003": "FAKE-003",
+    "sheet_004": "FAKE-004",
+    "sheet_005": "FAKE-005"
+  },
+  "vehicles": {
+    "FAKE-001": {
+      "vehicle_no": "FAKE-001",
+      "modal": "FAKE MODEL",
+      "time_limit_hours": null,
+      "placeholder_rates": true,
+      "contract_rates": {
+        "monthly_fare": 999001.01,
+        "total_fix_km": 999999,
+        "ex_km_rate": 9991.01,
+        "ex_hr_rate": 9991.02,
+        "outstation_rate": 9991.03,
+        "night_rate": 9991.04
+      }
+    },
+    "FAKE-002": {
+      "vehicle_no": "FAKE-002",
+      "modal": "FAKE MODEL",
+      "time_limit_hours": null,
+      "placeholder_rates": true,
+      "contract_rates": {
+        "monthly_fare": 999002.02,
+        "total_fix_km": 999999,
+        "ex_km_rate": 9992.01,
+        "ex_hr_rate": 9992.02,
+        "outstation_rate": 9992.03,
+        "night_rate": 9992.04
+      }
+    },
+    "FAKE-003": {
+      "vehicle_no": "FAKE-003",
+      "modal": "FAKE MODEL",
+      "time_limit_hours": null,
+      "placeholder_rates": true,
+      "contract_rates": {
+        "monthly_fare": 999003.03,
+        "total_fix_km": 999999,
+        "ex_km_rate": 9993.01,
+        "ex_hr_rate": 9993.02,
+        "outstation_rate": 9993.03,
+        "night_rate": 9993.04
+      }
+    },
+    "FAKE-004": {
+      "vehicle_no": "FAKE-004",
+      "modal": "FAKE MODEL",
+      "time_limit_hours": null,
+      "placeholder_rates": true,
+      "contract_rates": {
+        "monthly_fare": 999004.04,
+        "total_fix_km": 999999,
+        "ex_km_rate": 9994.01,
+        "ex_hr_rate": 9994.02,
+        "outstation_rate": 9994.03,
+        "night_rate": 9994.04
+      }
+    },
+    "FAKE-005": {
+      "vehicle_no": "FAKE-005",
+      "modal": "FAKE MODEL",
+      "time_limit_hours": null,
+      "placeholder_rates": true,
+      "contract_rates": {
+        "monthly_fare": 999005.05,
+        "total_fix_km": 999999,
+        "ex_km_rate": 9995.01,
+        "ex_hr_rate": 9995.02,
+        "outstation_rate": 9995.03,
+        "night_rate": 9995.04
+      }
+    }
+  }
+}
