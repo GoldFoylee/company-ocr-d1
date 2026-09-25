@@ -16,7 +16,7 @@ from app.cropping import FIELD_NAMES, CroppedCell, crop_cells
 from app.grid import GridLines, detect_cells, detect_grid_lines
 from app.matching import NameMatch, find_best_name_match
 from app.models import Extraction, Sheet
-from app.ocr.base import Recognizer
+from app.ocr.base import FieldAwareRecognizer, Recognizer
 from app.preprocessing import preprocess
 from app.validation.engine import ExtractedRowValues, ValidationEngine, ValidationResult
 from app.validation.flagging import decide_field_flag
@@ -141,7 +141,10 @@ def run_sheet_pipeline(
             written_paths.append(path)
             if not cv2.imwrite(str(path), crop.image):
                 raise OSError(f"Could not write cell image: {path}")
-            text, confidence = recognizer.recognize(crop.image)
+            if isinstance(recognizer, FieldAwareRecognizer):
+                text, confidence = recognizer.recognize_field(crop.field_name, crop.image)
+            else:
+                text, confidence = recognizer.recognize(crop.image)
             row_fields = recognized_by_row.setdefault(crop.row, {})
             if crop.field_name in row_fields:
                 raise ValueError(f"Duplicate {crop.field_name} crop in row {crop.row + 1}")

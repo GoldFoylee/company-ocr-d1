@@ -66,7 +66,7 @@ class OCRPredictor(Protocol):
     the real ``paddleocr`` package.
     """
 
-    def predict(self, input: np.ndarray) -> list[Any]: ...
+    def predict(self, input: np.ndarray, **kwargs: Any) -> list[Any]: ...
 
 
 @dataclass(frozen=True, slots=True)
@@ -160,6 +160,18 @@ class PaddleOCRRecognizer:
             else _build_predictor(model_tier, _mkldnn_enabled(enable_mkldnn))
         )
 
+    def recognize_field(self, field_name: str, cell_image: np.ndarray) -> tuple[str, float]:
+        """Use measured lower detection thresholds for clock fields only.
+
+        The five-fixture measurement found a time-field accuracy gain without
+        a mean-confidence regression. Dates retained their original accuracy
+        and had one corrected and one newly wrong read, so they stay on the
+        default detector path. All other fields also retain that path.
+        """
+        if field_name in {"start_time", "close_time"}:
+            return self._recognize(cell_image, text_det_thresh=0.1, text_det_box_thresh=0.3)
+        return self.recognize(cell_image)
+
     def recognize(self, cell_image: np.ndarray) -> tuple[str, float]:
         """Recognize a cropped cell image as ``(text, confidence)``.
 
@@ -167,10 +179,13 @@ class PaddleOCRRecognizer:
         nothing", not a fabricated fallback. Zero confidence sends the field to
         review under the existing flagging threshold (app/validation/flagging.py).
         """
+        return self._recognize(cell_image)
+
+    def _recognize(self, cell_image: np.ndarray, **predict_options: Any) -> tuple[str, float]:
         validate_cell_image(cell_image)
 
         try:
-            predict_results = self._predictor.predict(input=cell_image)
+            predict_results = self._predictor.predict(input=cell_image, **predict_options)
         except Exception as exc:
             raise OCRBackendError(f"PP-OCRv6 inference failed: {exc}") from exc
 

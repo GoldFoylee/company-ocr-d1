@@ -35,6 +35,20 @@ class Recognizer(Protocol):
         ...
 
 
+@runtime_checkable
+class FieldAwareRecognizer(Recognizer, Protocol):
+    """Optional extension for recognizers that tune inference by field name.
+
+    The ordinary ``Recognizer`` interface remains valid. A pipeline can pass
+    field context when this extension is present without importing a specific
+    OCR backend or changing its handling of generic recognizers.
+    """
+
+    def recognize_field(self, field_name: str, cell_image: np.ndarray) -> tuple[str, float]:
+        """Recognize a cell using its known form field as context."""
+        ...
+
+
 def validate_cell_image(cell_image: np.ndarray) -> None:
     """Reject inputs that cannot represent a cropped cell image.
 

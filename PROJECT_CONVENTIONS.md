@@ -32,6 +32,28 @@ agent session (ECC or otherwise) working in this repo.
   should aim for full branch coverage, since it's the last line of defense on financial fields.
 - No PR merges without CI green.
 
+## Raw-fixture guard and public branches
+- **Before committing, every contributor must install the repository's pre-commit hook**
+  with `./scripts/install_dev_hooks.sh`. The hook runs
+  `scripts/check_no_raw_fixtures.sh` before Git creates a commit. The tracked
+  `.pre-commit-config.yaml` alone does not install a hook in a clone. Check
+  that `$(git rev-parse --git-path hooks)/pre-commit` exists and is executable.
+- Do not use `git commit --no-verify` to skip the hook. An exceptional bypass
+  requires a deliberate, documented reason in the PR and a successful manual
+  run of `scripts/check_no_raw_fixtures.sh` before pushing. A failing raw-fixture
+  check is never a reason to bypass it. Git technically permits `--no-verify`;
+  this is a contributor requirement, not a claim that Git makes bypass impossible.
+- The routine local Docker backend test command is `./scripts/test_backend.sh`.
+  It runs the guard inside the dev image before pytest, including in linked
+  worktrees. Bare `docker compose exec app pytest` does not run the guard.
+- CI also runs the guard in both GitHub Actions jobs. This is a **develop/main
+  merge gate**, not a pre-push barrier: a raw fixture pushed to a public feature
+  branch has already reached the public repository, even if its PR never merges.
+  The pre-commit hook, run before a push, is the first line of defense.
+- This guard checks Git-tracked files under `tests/fixtures/raw/`. It is not a
+  general scan for sensitive content elsewhere. Review all data before staging
+  and pushing, including files under other paths.
+
 ## Stop conditions (agent sessions, every task)
 Unless a human explicitly says otherwise for that specific action, in that specific session:
 - Never merge or approve a pull request. Open it (draft or ready) and stop; a human merges.

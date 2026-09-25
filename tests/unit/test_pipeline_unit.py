@@ -101,6 +101,44 @@ def test_incomplete_crops_roll_back_sheet_and_remove_written_images(
         engine.dispose()
 
 
+def test_pipeline_passes_field_name_to_optional_field_aware_recognizer(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = _stub_single_cell_stages(monkeypatch, tmp_path)
+
+    class FieldAwareSpy:
+        def __init__(self) -> None:
+            self.fields: list[str] = []
+
+        def recognize(self, cell_image: np.ndarray) -> tuple[str, float]:
+            raise AssertionError("generic read should not be used")
+
+        def recognize_field(self, field_name: str, cell_image: np.ndarray) -> tuple[str, float]:
+            self.fields.append(field_name)
+            return "1/8/26", 0.9
+
+    recognizer = FieldAwareSpy()
+    engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    try:
+        with Session(engine) as db:
+            with pytest.raises(ValueError, match="ds_no"):
+                pipeline.run_sheet_pipeline(
+                    image_path=source,
+                    crop_root=tmp_path / "crops",
+                    db=db,
+                    recognizer=recognizer,
+                    vehicle="Synthetic Vehicle",
+                    branch="Synthetic Branch",
+                    sheet_date=date(2026, 9, 24),
+                    roster_query="Morgon Alder",
+                    roster_names=("Morgan Alder",),
+                )
+        assert recognizer.fields == ["date"]
+    finally:
+        engine.dispose()
+
+
 def test_existing_crop_directory_is_preserved_on_conflict(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
