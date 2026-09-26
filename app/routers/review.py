@@ -1,9 +1,12 @@
+from pathlib import Path as FilePath
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Path, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.models import Extraction
 from app.schemas.review import (
     FieldCorrectionRequest,
     FieldCorrectionResponse,
@@ -16,8 +19,36 @@ from app.services.review import (
     submit_field_correction,
     verify_sheet,
 )
+from app.services.sheet_review import EXCLUDED_FIELD
+from app.storage import get_crop_root
 
 router = APIRouter()
+
+_IMAGE_MEDIA_TYPES = {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png"}
+
+
+@router.get(
+    "/crops/{extraction_id}",
+    response_class=FileResponse,
+    summary="Serve a stored extraction crop",
+)
+def get_extraction_crop(
+    extraction_id: Annotated[int, Path(ge=1)],
+    db: Annotated[Session, Depends(get_db)],
+    crop_root: Annotated[FilePath, Depends(get_crop_root)],
+) -> FileResponse:
+    """Serve only non-guest image crops contained by the configured crop root."""
+    extraction = db.get(Extraction, extraction_id)
+    if extraction is None or extraction.field_name == EXCLUDED_FIELD:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Crop not found")
+
+    root = crop_root.resolve()
+    crop = FilePath(extraction.image_crop_ref).resolve()
+    media_type = _IMAGE_MEDIA_TYPES.get(crop.suffix.lower())
+    if not crop.is_relative_to(root) or not crop.is_file() or media_type is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Crop not found")
+
+    return FileResponse(crop, media_type=media_type)
 
 
 @router.get(

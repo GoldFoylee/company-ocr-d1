@@ -1,28 +1,28 @@
 """HTTP endpoints for sheet ingestion."""
 
-import os
 from datetime import date
 from pathlib import Path
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import Path as ApiPath
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.ocr.base import Recognizer
 from app.ocr.provider import get_recognizer
-from app.schemas.sheets import SheetUploadResponse
+from app.schemas.sheets import SheetDetailResponse, SheetSummaryResponse, SheetUploadResponse
+from app.services.sheet_review import get_sheet_detail, list_sheets
 from app.services.sheet_upload import ALLOWED_IMAGE_TYPES, process_uploaded_sheet
+from app.storage import get_crop_root, get_upload_root
 
 router = APIRouter()
 
 
-def get_upload_root() -> Path:
-    return Path(os.environ.get("STORAGE_LOCAL_PATH", "data/uploads")).resolve()
-
-
-def get_crop_root() -> Path:
-    return Path(os.environ.get("OCR_CROP_ROOT", "data/crops")).resolve()
+@router.get("", response_model=list[SheetSummaryResponse], summary="List uploaded sheets")
+@router.get("/", response_model=list[SheetSummaryResponse], include_in_schema=False)
+def get_sheets(db: Annotated[Session, Depends(get_db)]) -> list[SheetSummaryResponse]:
+    return list_sheets(db)
 
 
 @router.post(
@@ -85,3 +85,15 @@ def upload_sheet(
         extraction_count=result.extraction_count,
         status=sheet.status,
     )
+
+
+@router.get(
+    "/{sheet_id}",
+    response_model=SheetDetailResponse,
+    summary="Get a sheet in physical review-grid order",
+)
+def get_sheet(
+    sheet_id: Annotated[int, ApiPath(ge=1)],
+    db: Annotated[Session, Depends(get_db)],
+) -> SheetDetailResponse:
+    return get_sheet_detail(db, sheet_id)
