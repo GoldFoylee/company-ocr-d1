@@ -10,3 +10,4 @@ node_modules/
 .mypy_cache/
 .ruff_cache/
 tests/fixtures/raw/
+app/data/
