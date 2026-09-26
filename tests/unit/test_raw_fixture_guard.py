@@ -40,5 +40,5 @@ def test_installed_pre_commit_hook_rejects_staged_raw_fixture(tmp_path: Path) ->
     commit = _git(tmp_path, "commit", "-m", "dummy")
 
     assert commit.returncode != 0
-    assert "raw fixtures must never be committed" in commit.stderr
+    assert "raw fixtures and real upload data must never be committed" in commit.stderr
     assert _git(tmp_path, "rev-list", "--count", "HEAD").returncode != 0
