@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.models import Extraction, Reviewer, Sheet
 from app.schemas.review import FieldCorrectionRequest, ReviewQueueItemResponse
+from app.services.sheet_review import EXCLUDED_FIELD
 
 audit_logger = logging.getLogger("audit.review")
 
@@ -25,7 +26,11 @@ def get_review_queue(
     stmt = (
         select(Extraction, Sheet)
         .join(Sheet, Extraction.sheet_id == Sheet.id)
-        .where(Extraction.rule_flag.is_(True), Extraction.reviewed_at.is_(None))
+        .where(
+            Extraction.rule_flag.is_(True),
+            Extraction.reviewed_at.is_(None),
+            Extraction.field_name != EXCLUDED_FIELD,
+        )
         .order_by(Extraction.id.asc())
     )
 
@@ -65,7 +70,7 @@ def submit_field_correction(
 ) -> Extraction:
     """Submit a human correction or confirmation for a single extraction."""
     extraction = db.get(Extraction, extraction_id)
-    if extraction is None:
+    if extraction is None or extraction.field_name == EXCLUDED_FIELD:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Extraction with id {extraction_id} not found",
@@ -121,6 +126,7 @@ def verify_sheet(
                 Extraction.sheet_id == sheet_id,
                 Extraction.rule_flag.is_(True),
                 Extraction.reviewed_at.is_(None),
+                Extraction.field_name != EXCLUDED_FIELD,
             )
         )
         .scalars()

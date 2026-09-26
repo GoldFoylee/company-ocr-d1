@@ -21,18 +21,18 @@ from app.exports.database_adapter import (
 )
 from app.ocr.base import Recognizer
 from app.ocr.provider import get_recognizer
-from app.schemas.sheets import SheetUploadResponse
+from app.schemas.sheets import SheetDetailResponse, SheetSummaryResponse, SheetUploadResponse
+from app.services.sheet_review import get_sheet_detail, list_sheets
 from app.services.sheet_upload import ALLOWED_IMAGE_TYPES, process_uploaded_sheet
+from app.storage import get_crop_root, get_upload_root
 
 router = APIRouter()
 
 
-def get_upload_root() -> Path:
-    return Path(os.environ.get("STORAGE_LOCAL_PATH", "data/uploads")).resolve()
-
-
-def get_crop_root() -> Path:
-    return Path(os.environ.get("OCR_CROP_ROOT", "data/crops")).resolve()
+@router.get("", response_model=list[SheetSummaryResponse], summary="List uploaded sheets")
+@router.get("/", response_model=list[SheetSummaryResponse], include_in_schema=False)
+def get_sheets(db: Annotated[Session, Depends(get_db)]) -> list[SheetSummaryResponse]:
+    return list_sheets(db)
 
 
 def get_contract_rates_path() -> Path:
@@ -133,3 +133,15 @@ def export_sheet(
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
+
+
+@router.get(
+    "/{sheet_id}",
+    response_model=SheetDetailResponse,
+    summary="Get a sheet in physical review-grid order",
+)
+def get_sheet(
+    sheet_id: Annotated[int, ApiPath(ge=1)],
+    db: Annotated[Session, Depends(get_db)],
+) -> SheetDetailResponse:
+    return get_sheet_detail(db, sheet_id)
