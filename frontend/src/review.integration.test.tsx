@@ -5,7 +5,7 @@ import App from './App'
 
 describe('live tabular review workflow', () => {
   it('loads a physical row, corrects it, verifies it, and downloads the workbook', async () => {
-    const createObjectUrl = vi.fn(() => 'blob:synthetic-export')
+    const createObjectUrl = vi.fn((_blob: Blob) => 'blob:synthetic-export')
     const revokeObjectUrl = vi.fn()
     const clickAnchor = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {})
     Object.defineProperty(URL, 'createObjectURL', { configurable: true, value: createObjectUrl })
@@ -33,7 +33,12 @@ describe('live tabular review workflow', () => {
     })
 
     fireEvent.click(screen.getByRole('button', { name: 'Export to Excel' }))
-    await waitFor(() => expect(createObjectUrl).toHaveBeenCalledWith(expect.any(Blob)))
+    await waitFor(() => expect(createObjectUrl).toHaveBeenCalledTimes(1))
+    const exportedBlob = createObjectUrl.mock.calls[0][0]
+    expect(exportedBlob.size).toBeGreaterThan(0)
+    expect(exportedBlob.type).toBe(
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    )
     expect(clickAnchor).toHaveBeenCalled()
     expect(revokeObjectUrl).toHaveBeenCalledWith('blob:synthetic-export')
   })
