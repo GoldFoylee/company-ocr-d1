@@ -135,6 +135,7 @@ def test_real_recognizer_does_not_change_pipeline_structure(
     for extraction in extractions:
         crop_path = Path(extraction.image_crop_ref)
         assert crop_path.is_file()
+        assert crop_path.name.startswith(f"row{extraction.row_number:02d}_")
         assert crop_path.name.endswith(f"_{extraction.field_name}.jpg")
         assert cv2.imread(extraction.image_crop_ref) is not None
         assert isinstance(extraction.raw_ocr_value, str)

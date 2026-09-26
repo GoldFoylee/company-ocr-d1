@@ -5,9 +5,8 @@ __pycache__/
 .coverage
 node_modules/
 .env
-.coverage
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
 tests/fixtures/raw/
-app/data/
+data/

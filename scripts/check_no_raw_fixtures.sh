@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-tracked_sensitive_data="$(git ls-files -- tests/fixtures/raw app/data)"
+tracked_sensitive_data="$(git ls-files -- tests/fixtures/raw data)"
 
 if [[ -n "${tracked_sensitive_data}" ]]; then
   echo "ERROR: raw fixtures and real upload data must never be committed to this public repository." >&2

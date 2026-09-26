@@ -11,6 +11,7 @@ from app.models import Extraction, Reviewer, Sheet
 
 EXTRACTION_BUSINESS_COLUMNS = {
     "sheet_id",
+    "row_number",
     "field_name",
     "image_crop_ref",
     "raw_ocr_value",
@@ -56,6 +57,7 @@ def test_all_tables_round_trip_rows(db_session: Session) -> None:
 
     extraction = Extraction(
         sheet_id=sheet.id,
+        row_number=7,
         field_name="odometer",
         image_crop_ref="/data/crops/sheet-001-odometer.jpg",
         raw_ocr_value="12345",
@@ -89,6 +91,7 @@ def test_all_tables_round_trip_rows(db_session: Session) -> None:
 
     assert stored_extraction is not None
     assert stored_extraction.sheet_id == sheet_id
+    assert stored_extraction.row_number == 7
     assert stored_extraction.field_name == "odometer"
     assert stored_extraction.image_crop_ref == "/data/crops/sheet-001-odometer.jpg"
     assert stored_extraction.raw_ocr_value == "12345"
@@ -123,6 +126,29 @@ def test_extraction_rejects_unknown_sheet(db_session: Session) -> None:
     db_session.add(extraction)
 
     with pytest.raises(IntegrityError, match="ForeignKeyViolation"):
+        db_session.flush()
+
+
+def test_extraction_rejects_non_positive_row_number(db_session: Session) -> None:
+    sheet = Sheet(
+        vehicle="MH-01-AB-1234",
+        branch="Mumbai",
+        date=date(2026, 9, 20),
+        image_path="/data/uploads/invalid-row-number.jpg",
+    )
+    db_session.add(sheet)
+    db_session.flush()
+    db_session.add(
+        Extraction(
+            sheet_id=sheet.id,
+            row_number=0,
+            field_name="odometer",
+            image_crop_ref="/data/crops/invalid-row-number.jpg",
+            raw_ocr_value="12345",
+        )
+    )
+
+    with pytest.raises(IntegrityError, match="CheckViolation"):
         db_session.flush()
 
 

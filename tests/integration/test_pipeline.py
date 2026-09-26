@@ -142,6 +142,7 @@ def test_real_sheet_pipeline_persists_every_extraction_and_audit_field(
         row_match = re.fullmatch(r"row(\d{2})_.+\.jpg", crop_path.name)
         assert row_match is not None
         row_number = int(row_match.group(1))
+        assert extraction.row_number == row_number
         rows_seen.setdefault(row_number, set()).add(extraction.field_name)
         assert cv2.imread(extraction.image_crop_ref) is not None
         if extraction.field_name == "ds_no":
