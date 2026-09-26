@@ -1,14 +1,24 @@
 """HTTP endpoints for sheet ingestion."""
 
 import os
+import re
+import tempfile
 from datetime import date
 from pathlib import Path
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import Path as ApiPath
+from fastapi.responses import Response
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.exports.billing_excel import DEFAULT_CONTRACT_RATES, create_monthly_billing_export
+from app.exports.database_adapter import (
+    SheetExportDataError,
+    SheetExportNotFoundError,
+    build_billing_source,
+)
 from app.ocr.base import Recognizer
 from app.ocr.provider import get_recognizer
 from app.schemas.sheets import SheetUploadResponse
@@ -23,6 +33,10 @@ def get_upload_root() -> Path:
 
 def get_crop_root() -> Path:
     return Path(os.environ.get("OCR_CROP_ROOT", "data/crops")).resolve()
+
+
+def get_contract_rates_path() -> Path:
+    return Path(os.environ.get("CONTRACT_RATES_PATH", DEFAULT_CONTRACT_RATES)).resolve()
 
 
 @router.post(
@@ -84,4 +98,38 @@ def upload_sheet(
         row_count=result.row_count,
         extraction_count=result.extraction_count,
         status=sheet.status,
+    )
+
+
+@router.get(
+    "/{sheet_id}/export",
+    response_class=Response,
+    summary="Download a formula-driven Excel export from live reviewed data",
+)
+def export_sheet(
+    sheet_id: Annotated[int, ApiPath(ge=1)],
+    db: Annotated[Session, Depends(get_db)],
+    contract_rates_path: Annotated[Path, Depends(get_contract_rates_path)],
+) -> Response:
+    """Build and return one sheet's current effective values as an XLSX attachment."""
+    try:
+        source = build_billing_source(db, sheet_id)
+        with tempfile.TemporaryDirectory(prefix="billing-export-") as directory:
+            output = Path(directory) / "billing.xlsx"
+            create_monthly_billing_export([source], output, contract_rates_path)
+            content = output.read_bytes()
+    except SheetExportNotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+    except (SheetExportDataError, ValueError) as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(exc),
+        ) from exc
+
+    vehicle = re.sub(r"[^A-Za-z0-9._-]+", "-", str(source["vehicle_no"])).strip("-")
+    filename = f"billing-{vehicle or sheet_id}.xlsx"
+    return Response(
+        content=content,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
