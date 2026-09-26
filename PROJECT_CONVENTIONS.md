@@ -23,6 +23,12 @@ agent session (ECC or otherwise) working in this repo.
   logic and the review API must never import a specific OCR library directly.
 - Excel export via openpyxl/pandas, matching accounts' existing column layout exactly.
 
+## Docker platform requirement
+- The `app` service in `docker-compose.yml` must specify `platform: linux/amd64`. PaddlePaddle
+  3.3.1 has no arm64 wheel, so Apple Silicon machines cannot build the app image natively for
+  linux/arm64. Compose applies this base-service platform pin when merging the standard
+  `docker-compose.override.yml` too; do not duplicate it in `Dockerfile.dev` or the override.
+
 ## Testing requirement
 - Every new module ships with unit tests in the same PR — no follow-up "add tests later" PRs.
 - Any change touching the CV/OCR pipeline must run against the golden fixtures in
