@@ -233,9 +233,9 @@ def test_duplicate_ds_number_from_real_fixture_crop_fails_uniqueness(
     ).all()
     assert len(ds_extractions) == 11
     assert [item.raw_ocr_value for item in ds_extractions] == ds_numbers
-    assert [item.row_number for item in ds_extractions if item.rule_flag] == [2]
-    assert "duplicate DS.No" in (ds_extractions[1].rule_flag_reason or "")
-    assert ds_extractions[0].rule_flag_reason is None
+    assert [item.row_number for item in ds_extractions if item.rule_flag] == [1, 2]
+    for extraction in ds_extractions[:2]:
+        assert "duplicate DS.No" in (extraction.rule_flag_reason or "")
 
 
 def test_pipeline_flags_only_the_cells_with_invalid_values(
@@ -282,11 +282,22 @@ def test_pipeline_flags_only_the_cells_with_invalid_values(
         select(Extraction).where(Extraction.sheet_id == result.sheet_id)
     ).all()
     flagged = {(item.row_number, item.field_name) for item in extractions if item.rule_flag}
-    assert flagged == set(overrides)
+    expected_flags = set(overrides) | {
+        (1, "start_time"), (1, "close_time"), (1, "total_time"),
+        (7, "start_time"), (7, "total_time"),
+        (8, "close_km"), (8, "total_km"),
+        *((row_number, "ds_no") for row_number in range(1, len(truth) + 1)),
+        (5, "date"), (7, "date"),
+    }
+    assert flagged == expected_flags
     for item in extractions:
-        if (item.row_number, item.field_name) in overrides:
+        key = (item.row_number, item.field_name)
+        if key in overrides:
             assert item.raw_ocr_value == overrides[(item.row_number, item.field_name)]
             assert "Validation failed" in (item.rule_flag_reason or "")
+        elif key in expected_flags:
+            assert item.rule_flag_reason is not None
+            assert "could not verify:" in item.rule_flag_reason
         else:
             assert item.rule_flag_reason is None
         if (item.row_number, item.field_name) in supported_formats:
