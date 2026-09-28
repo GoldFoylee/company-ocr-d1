@@ -186,6 +186,7 @@ input:focus-visible {
 .review-table tbody tr:last-child td { border-bottom: 0; }
 .review-cell { position: relative; color: #23352d; font-size: 0.86rem; overflow-wrap: anywhere; }
 .review-cell--flagged { background: #fff0df; box-shadow: inset 0 0 0 2px #d37a37; }
+.row-warning td { background: #fff5e9; color: #70472d; font-size: 0.82rem; }
 .flagged-value {
   width: 100%;
   min-height: 2rem;
@@ -199,6 +200,8 @@ input:focus-visible {
   text-align: left;
 }
 .flagged-value:hover:not(:disabled) { background: rgb(255 255 255 / 55%); }
+.warning-value { width: 100%; min-height: 2rem; padding: 0.2rem; border: 0; border-radius: 0.2rem; background: transparent; color: #23352d; font: inherit; text-align: left; }
+.warning-value:hover:not(:disabled) { background: #e8f0e9; }
 .excluded-value { color: #7d8983; font-size: 0.78rem; font-style: italic; }
 .missing-value { color: #9aa39e; }
 

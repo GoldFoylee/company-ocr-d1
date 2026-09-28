@@ -10,138 +10,18 @@ misleading here, given that ground truth is stored in a normalized form the
 source sheet does not use.
 """
 
-import re
-from collections.abc import Callable
 from dataclasses import asdict, dataclass
-from datetime import datetime
 from typing import Final, Literal
 
 from rapidfuzz.distance import Levenshtein
+
+from app.validation.canonicalization import canonicalize
 
 Bucket = Literal["scored", "redacted", "no_ground_truth"]
 
 # Fields excluded from OCR entirely: the crop is a black redaction box (see
 # tests/fixtures/anonymized/README.md). Never scored, never even recognized.
 _REDACTED_FIELD_NAMES: Final[frozenset[str]] = frozenset({"guest_name"})
-
-
-# --- Canonicalization ------------------------------------------------------
-#
-# Ground truth is stored in a normalized form the sheet itself does not use (an
-# ISO date vs. "1|8|26" as written, a 24-hour time vs. two handwritten lines, a
-# categorical total_time vs. a bare number). A raw string-equality match would
-# read close to 0% for these fields regardless of whether PP-OCRv6 read the
-# handwriting correctly -- that would measure the ground-truth schema, not the
-# model. So `canonical_exact` exists alongside `raw_exact`, not instead of it.
-#
-# Each canonicalizer is applied identically to both sides of the comparison (the
-# OCR text and the ground-truth string) -- the same function tries the same
-# fixed list of formats against whichever text it is given, so which side is
-# "the sheet's format" and which is "the ground truth's format" is not hardcoded
-# into the function. Mirrors the fixed-format-list pattern already used by
-# app/validation/engine.py's own date parsing (_DATE_FORMATS).
-#
-# These rules are fixed before the baseline is first run and are not to be
-# edited after seeing a result -- see docs/baselines/ppocrv6-baseline.md's own
-# statement of that guardrail.
-
-_DATE_INPUT_FORMATS: Final[tuple[str, ...]] = (
-    "%Y-%m-%d",
-    "%d/%m/%Y",
-    "%d/%m/%y",
-    "%d-%m-%Y",
-    "%d-%m-%y",
-    "%d.%m.%Y",
-    "%d.%m.%y",
-    "%d|%m|%Y",
-    "%d|%m|%y",
-)
-
-_TIME_INPUT_FORMATS: Final[tuple[str, ...]] = (
-    "%H:%M",
-    "%I:%M %p",
-    "%I:%M%p",
-    "%I.%M %p",
-)
-
-# The form's own convention: a bare duration number means hours; "day"/"1D"
-# variants mean a full day. See app/validation/engine.py's TOTAL_TIME_CATEGORIES
-# for the canonical category set this maps onto.
-_TOTAL_TIME_ALIASES: Final[dict[str, str]] = {
-    "0": "0H",
-    "0H": "0H",
-    "12": "12H",
-    "12H": "12H",
-    "1D": "1D",
-    "1DAY": "1D",
-    "DAY": "1D",
-}
-
-_WHITESPACE_RE: Final = re.compile(r"\s+")
-_NON_DIGIT_RE: Final = re.compile(r"[^\d]")
-_NON_ALNUM_RE: Final = re.compile(r"[^A-Z0-9]")
-
-
-def _normalize_universal(value: str) -> str:
-    """Default canonicalization: collapse whitespace, uppercase. No parsing."""
-    return _WHITESPACE_RE.sub(" ", value.strip()).upper()
-
-
-def _canonical_date(value: str) -> str | None:
-    stripped = value.strip()
-    for fmt in _DATE_INPUT_FORMATS:
-        try:
-            return datetime.strptime(stripped, fmt).date().isoformat()
-        except ValueError:
-            continue
-    return None
-
-
-def _canonical_time(value: str) -> str | None:
-    normalized = _WHITESPACE_RE.sub(" ", value.strip().upper())
-    for fmt in _TIME_INPUT_FORMATS:
-        try:
-            return datetime.strptime(normalized, fmt).strftime("%H:%M")
-        except ValueError:
-            continue
-    return None
-
-
-def _canonical_km(value: str) -> str | None:
-    digits = _NON_DIGIT_RE.sub("", value)
-    if not digits:
-        return None
-    return str(int(digits))
-
-
-def _canonical_total_time(value: str) -> str | None:
-    normalized = _NON_ALNUM_RE.sub("", value.strip().upper())
-    return _TOTAL_TIME_ALIASES.get(normalized)
-
-
-def _canonical_toll_or_parking(value: str) -> str:
-    # The form's convention: a blank Toll/Parking cell means nothing was paid.
-    digits = _NON_DIGIT_RE.sub("", value.strip())
-    return digits if digits else "0"
-
-
-_CANONICALIZERS: Final[dict[str, Callable[[str], str | None]]] = {
-    "date": _canonical_date,
-    "start_time": _canonical_time,
-    "close_time": _canonical_time,
-    "start_km": _canonical_km,
-    "close_km": _canonical_km,
-    "total_km": _canonical_km,
-    "total_time": _canonical_total_time,
-    "toll": _canonical_toll_or_parking,
-    "parking": _canonical_toll_or_parking,
-}
-
-
-def canonicalize(field_name: str, value: str) -> str | None:
-    """Map raw text to this field's canonical form, or None if it doesn't parse."""
-    canonicalizer = _CANONICALIZERS.get(field_name, _normalize_universal)
-    return canonicalizer(value)
 
 
 # --- Metrics -----------------------------------------------------------------

@@ -98,6 +98,37 @@ def seed_extraction(
     return extraction
 
 
+def test_row_warning_is_visible_and_blocks_verification_until_corrected(
+    client: TestClient, db_session: Session, crop_root: Path
+) -> None:
+    sheet = seed_sheet(db_session)
+    values = {
+        "ds_no": "1", "date": "2026-08-01", "start_km": "1000",
+        "close_km": "1150", "total_km": "149", "start_time": "08:00",
+        "close_time": "20:00", "total_time": "12h",
+    }
+    records = {
+        field: seed_extraction(
+            db_session, sheet, row_number=1, field_name=field,
+            crop_path=crop_root / f"{field}.jpg", raw_value=value,
+        )
+        for field, value in values.items()
+    }
+
+    detail = client.get(f"/sheets/{sheet.id}").json()
+    assert "kilometre mismatch" in detail["rows"][0]["warnings"][0]
+    assert not any(cell["rule_flag"] for cell in detail["rows"][0]["cells"])
+    assert client.post(f"/review/sheets/{sheet.id}/verify").status_code == 400
+
+    response = client.post(
+        f"/review/fields/{records['total_km'].id}/correction",
+        json={"final_value": "150"},
+    )
+    assert response.status_code == 200
+    assert client.get(f"/sheets/{sheet.id}").json()["rows"][0]["warnings"] == []
+    assert client.post(f"/review/sheets/{sheet.id}/verify").status_code == 200
+
+
 def test_list_sheets_returns_all_sheets_newest_first(
     client: TestClient, db_session: Session
 ) -> None:

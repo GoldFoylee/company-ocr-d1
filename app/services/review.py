@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.models import Extraction, Reviewer, Sheet
 from app.schemas.review import FieldCorrectionRequest, ReviewQueueItemResponse
-from app.services.sheet_review import EXCLUDED_FIELD
+from app.services.sheet_review import EXCLUDED_FIELD, get_sheet_detail
 
 audit_logger = logging.getLogger("audit.review")
 
@@ -133,30 +133,37 @@ def verify_sheet(
         .all()
     )
     unreviewed_count = len(unreviewed_extractions)
+    row_warnings = [
+        (row.row_number, warning)
+        for row in get_sheet_detail(db, sheet_id).rows
+        for warning in row.warnings
+    ]
 
-    if unreviewed_count > 0 and not force:
+    if (unreviewed_count > 0 or row_warnings) and not force:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=(
                 f"Cannot mark sheet as verified: {unreviewed_count} flagged "
-                "field(s) awaiting review. Correct remaining flagged fields or "
+                f"field(s) awaiting review and {len(row_warnings)} row warning(s). "
+                "Correct remaining flagged fields and row warnings or "
                 "use force verification with audit trail."
             ),
         )
 
     verified_via_force = False
-    if unreviewed_count > 0 and force:
+    if (unreviewed_count > 0 or row_warnings) and force:
         verified_via_force = True
         sheet.force_verified = True
         sheet.force_verified_by = reviewer_id
         sheet.force_verified_at = datetime.now(UTC)
         audit_logger.warning(
-            "AUDIT FORCE VERIFY: Sheet %s (%s, %s) force-verified with %s flagged fields. "
-            "Extractions: %s. Reviewer: %s at %s",
+            "AUDIT FORCE VERIFY: Sheet %s (%s, %s) force-verified with %s flagged fields "
+            "and %s row warnings. Extractions: %s. Reviewer: %s at %s",
             sheet.id,
             sheet.vehicle,
             sheet.branch,
             unreviewed_count,
+            len(row_warnings),
             [e.id for e in unreviewed_extractions],
             reviewer_id or "unspecified",
             datetime.now(UTC).isoformat(),
@@ -167,6 +174,7 @@ def verify_sheet(
                 "branch": sheet.branch,
                 "unreviewed_count": unreviewed_count,
                 "unreviewed_extraction_ids": [e.id for e in unreviewed_extractions],
+                "row_warnings": row_warnings,
                 "reviewer_id": reviewer_id,
                 "timestamp": datetime.now(UTC).isoformat(),
             },

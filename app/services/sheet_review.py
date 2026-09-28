@@ -15,6 +15,8 @@ from app.schemas.sheets import (
     SheetRowResponse,
     SheetSummaryResponse,
 )
+from app.validation.engine import ExtractedRowValues
+from app.validation.scoping import scope_sheet
 
 EXCLUDED_FIELD: Final = "guest_name"
 
@@ -89,9 +91,41 @@ def get_sheet_detail(db: Session, sheet_id: int) -> SheetDetailResponse:
         )
         for field_name in FIELD_NAMES
     ]
+    ordered_rows = sorted(by_row.items())
+
+    def value(extractions: dict[str, Extraction], field: str) -> str:
+        extraction = extractions.get(field)
+        if extraction is None:
+            return ""
+        return (
+            extraction.final_value
+            if extraction.final_value is not None
+            else extraction.raw_ocr_value
+        )
+
+    scoped = scope_sheet(
+        [
+            ExtractedRowValues(
+                ds_no=value(fields, "ds_no"),
+                date=value(fields, "date"),
+                starting_km=value(fields, "start_km"),
+                closing_km=value(fields, "close_km"),
+                total_km=value(fields, "total_km"),
+                start_time=value(fields, "start_time"),
+                closing_time=value(fields, "close_time"),
+                total_time=value(fields, "total_time"),
+            )
+            for _, fields in ordered_rows
+        ],
+        [
+            {field: value(fields, field) for field in ("toll", "parking")}
+            for _, fields in ordered_rows
+        ],
+    )
     rows = [
         SheetRowResponse(
             row_number=row_number,
+            warnings=[result.reason for result in scoped.row_warnings.get(index, ())],
             cells=[
                 _build_cell(
                     row_number=row_number,
@@ -101,7 +135,7 @@ def get_sheet_detail(db: Session, sheet_id: int) -> SheetDetailResponse:
                 for field_name in FIELD_NAMES
             ],
         )
-        for row_number, row_extractions in sorted(by_row.items())
+        for index, (row_number, row_extractions) in enumerate(ordered_rows, start=1)
     ]
 
     return SheetDetailResponse(

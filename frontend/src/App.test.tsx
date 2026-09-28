@@ -75,6 +75,7 @@ function makeDetail(
       excluded: name === 'guest_name',
     })),
     rows: [{
+      warnings: [],
       row_number: 1,
       cells: FIELD_NAMES.map((name) => makeCell(name, {
         ...(name === 'guest_name' ? {
@@ -128,6 +129,19 @@ describe('tabular review screen', () => {
     expect(screen.getByTestId('cell-1-start_km')).toHaveClass('review-cell--flagged')
     expect(screen.getByTestId('cell-1-close_km')).not.toHaveClass('review-cell--flagged')
     expect(screen.queryByRole('button', { name: 'Review Close KM row 1' })).not.toBeInTheDocument()
+  })
+
+  it('shows a row warning and makes its cells reviewable while blocking release', async () => {
+    const detail = makeDetail(sheetOne)
+    detail.rows[0].warnings = ['kilometre mismatch: computed 150, reported 149']
+    vi.mocked(api.fetchSheet).mockResolvedValue(detail)
+    render(<App />)
+
+    expect(await screen.findByTestId('row-warning-1')).toHaveTextContent('kilometre mismatch')
+    expect(screen.getByRole('button', { name: 'Mark sheet verified' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Export to Excel' })).toBeDisabled()
+    fireEvent.click(screen.getByRole('button', { name: 'Review Close KM row 1' }))
+    expect(screen.getByLabelText('Correction for Close KM row 1')).toBeInTheDocument()
   })
 
   it('shows the real crop, reason, and inline editor for a flagged cell', async () => {
@@ -247,6 +261,7 @@ describe('tabular review screen', () => {
   })
 
   it('downloads the selected sheet through the live export API', async () => {
+    vi.mocked(api.fetchSheet).mockResolvedValue(makeDetail(sheetOne))
     render(<App />)
     fireEvent.click(await screen.findByRole('button', { name: 'Export to Excel' }))
     await waitFor(() => expect(api.downloadSheetExport).toHaveBeenCalledWith(7))

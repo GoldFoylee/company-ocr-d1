@@ -4,7 +4,7 @@ import os
 import shutil
 import subprocess
 from collections.abc import Iterator
-from datetime import date
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 import openpyxl
@@ -14,7 +14,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.exports.database_adapter import build_billing_source
+from app.exports.database_adapter import SheetExportDataError, build_billing_source
 from app.main import app
 from app.models import Extraction, Sheet
 
@@ -121,7 +121,7 @@ def test_export_endpoint_uses_saved_correction_and_recalculates_without_errors(
             "start_km": "23,695",
             "close_time": "20:00",
             "close_km": "23,796",
-            "total_km": "101",
+            "total_km": "96",
             "total_time": "12 H",
             "toll": "35.50",
             "parking": "40",
@@ -179,18 +179,20 @@ def test_database_adapter_groups_and_orders_extractions_by_row_number(
         "close_km": "110",
         "total_time": "1h",
     }
-    seed_row(
+    row_two = seed_row(
         db_session,
         sheet,
         row_number=2,
         values={"date": "02/08/2026", **common},
     )
-    seed_row(
+    row_one = seed_row(
         db_session,
         sheet,
         row_number=1,
         values={"date": "01/08/2026", **common},
     )
+    row_one["start_km"].reviewed_at = datetime.now(UTC)
+    row_two["start_km"].reviewed_at = datetime.now(UTC)
 
     source = build_billing_source(db_session, sheet.id)
 
@@ -198,6 +200,50 @@ def test_database_adapter_groups_and_orders_extractions_by_row_number(
         date(2026, 8, 1),
         date(2026, 8, 2),
     ]
+
+
+def test_export_rejects_unresolved_row_kilometre_warning(db_session: Session) -> None:
+    sheet = seed_sheet(db_session)
+    fields = seed_row(
+        db_session, sheet, row_number=1,
+        values={
+            "ds_no": "1", "date": "2026-08-01", "start_km": "1000",
+            "close_km": "1150", "total_km": "149", "start_time": "08:00",
+            "close_time": "20:00", "total_time": "12h",
+        },
+    )
+    fields["start_km"].reviewed_at = datetime.now(UTC)
+    with pytest.raises(SheetExportDataError, match="Unresolved row validation warning"):
+        build_billing_source(db_session, sheet.id)
+
+
+def test_export_rejects_unreviewed_flagged_field(db_session: Session) -> None:
+    sheet = seed_sheet(db_session)
+    seed_row(
+        db_session, sheet, row_number=1,
+        values={
+            "date": "2026-08-01", "start_time": "08:00", "start_km": "1000",
+            "close_time": "20:00", "close_km": "1150", "total_km": "150",
+            "total_time": "12h",
+        },
+    )
+    with pytest.raises(SheetExportDataError, match="flagged field.*awaiting review"):
+        build_billing_source(db_session, sheet.id)
+
+
+def test_force_verified_sheet_can_export_with_audited_override(db_session: Session) -> None:
+    sheet = seed_sheet(db_session)
+    sheet.status = "verified"
+    sheet.force_verified = True
+    seed_row(
+        db_session, sheet, row_number=1,
+        values={
+            "ds_no": "1", "date": "2026-08-01", "start_time": "08:00",
+            "start_km": "1000", "close_time": "20:00", "close_km": "1150",
+            "total_km": "149", "total_time": "12h",
+        },
+    )
+    assert len(build_billing_source(db_session, sheet.id)["rows"]) == 1
 
 
 def test_export_endpoint_returns_404_for_unknown_sheet(client: TestClient) -> None:
@@ -208,7 +254,7 @@ def test_export_endpoint_returns_422_when_vehicle_has_no_contract_config(
     client: TestClient, db_session: Session
 ) -> None:
     sheet = seed_sheet(db_session, vehicle="UNCONFIGURED-VEHICLE")
-    seed_row(
+    fields = seed_row(
         db_session,
         sheet,
         row_number=1,
@@ -221,6 +267,7 @@ def test_export_endpoint_returns_422_when_vehicle_has_no_contract_config(
             "total_time": "1h",
         },
     )
+    fields["start_km"].reviewed_at = datetime.now(UTC)
 
     response = client.get(f"/sheets/{sheet.id}/export")
 
