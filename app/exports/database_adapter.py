@@ -13,6 +13,9 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models import Extraction, Sheet
+from app.validation.canonicalization import canonicalize
+from app.validation.engine import ExtractedRowValues
+from app.validation.scoping import scope_sheet
 
 _DATE_FORMATS: Final = ("%Y-%m-%d", "%d/%m/%Y", "%d-%m-%Y", "%d.%m.%Y")
 _CLOCK_RE: Final = re.compile(r"^(?P<hours>\d{1,2}):(?P<minutes>\d{2})(?::(?P<seconds>\d{2}))?$")
@@ -55,6 +58,9 @@ def normalize_billing_date(value: object) -> date:
     if isinstance(value, date):
         return value
     normalized = str(value).strip()
+    canonical = canonicalize("date", normalized)
+    if canonical is not None:
+        return date.fromisoformat(canonical)
     for date_format in _DATE_FORMATS:
         try:
             return datetime.strptime(normalized, date_format).date()
@@ -69,6 +75,9 @@ def normalize_billing_clock(value: object) -> time:
         return value.time().replace(tzinfo=None)
     if isinstance(value, time):
         return value.replace(tzinfo=None)
+    canonical = canonicalize("start_time", str(value))
+    if canonical is not None:
+        return time.fromisoformat(canonical)
     normalized = str(value).strip().replace(".", ":")
     match = _CLOCK_RE.fullmatch(normalized)
     if match is None:
@@ -85,6 +94,9 @@ def normalize_billing_clock(value: object) -> time:
 
 def normalize_billing_duration(value: object) -> str:
     """Normalize duration text while retaining elapsed whole-day information."""
+    canonical = canonicalize("total_time", str(value))
+    if canonical is not None:
+        return canonical.lower()
     normalized = re.sub(r"\s+", "", str(value)).lower()
     match = _DURATION_RE.fullmatch(normalized)
     if match is None:
@@ -135,6 +147,15 @@ def build_billing_source(db: Session, sheet_id: int) -> Mapping[str, Any]:
         )
         .order_by(Extraction.row_number, Extraction.id)
     ).all()
+    pending_flags = [
+        extraction.id
+        for extraction in extractions
+        if extraction.rule_flag and extraction.reviewed_at is None
+    ]
+    if pending_flags and not sheet.force_verified:
+        raise SheetExportDataError(
+            f"Sheet has {len(pending_flags)} flagged field(s) awaiting review"
+        )
     by_row: dict[int, dict[str, object]] = {}
     for extraction in extractions:
         row_values = by_row.setdefault(extraction.row_number, {})
@@ -150,6 +171,30 @@ def build_billing_source(db: Session, sheet_id: int) -> Mapping[str, Any]:
 
     if not by_row:
         raise SheetExportDataError("Sheet has no exportable extraction rows")
+
+    ordered_values = sorted(by_row.items())
+
+    def text(values: dict[str, object], field: str) -> str:
+        return str(values.get(field) or "")
+
+    scoped = scope_sheet(
+        [
+            ExtractedRowValues(
+                ds_no=text(values, "ds_no"), date=text(values, "date"),
+                starting_km=text(values, "start_km"),
+                closing_km=text(values, "close_km"), total_km=text(values, "total_km"),
+                start_time=text(values, "start_time"),
+                closing_time=text(values, "close_time"),
+                total_time=text(values, "total_time"),
+            )
+            for _, values in ordered_values
+        ]
+    )
+    if scoped.row_warnings and not sheet.force_verified:
+        row_numbers = [str(ordered_values[index - 1][0]) for index in scoped.row_warnings]
+        raise SheetExportDataError(
+            f"Unresolved row validation warning(s) at row(s) {', '.join(row_numbers)}"
+        )
 
     rows: list[dict[str, object]] = []
     for row_number, values in sorted(by_row.items()):

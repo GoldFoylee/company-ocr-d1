@@ -37,7 +37,7 @@ export type SheetCell = {
   missing: boolean
 }
 
-export type SheetRow = { row_number: number; cells: SheetCell[] }
+export type SheetRow = { row_number: number; cells: SheetCell[]; warnings: string[] }
 export type SheetDetail = SheetSummary & { columns: SheetColumn[]; rows: SheetRow[] }
 
 export type FieldCorrectionResponse = {

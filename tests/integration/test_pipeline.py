@@ -40,6 +40,8 @@ VALIDATED_FIELDS = {
     "start_time",
     "close_time",
     "total_time",
+    "toll",
+    "parking",
 }
 
 
@@ -227,9 +229,65 @@ def test_duplicate_ds_number_from_real_fixture_crop_fails_uniqueness(
         select(Extraction).where(
             Extraction.sheet_id == result.sheet_id,
             Extraction.field_name == "ds_no",
-        )
+        ).order_by(Extraction.row_number)
     ).all()
     assert len(ds_extractions) == 11
     assert [item.raw_ocr_value for item in ds_extractions] == ds_numbers
-    assert all(item.rule_flag for item in ds_extractions)
-    assert all("duplicate DS.No" in (item.rule_flag_reason or "") for item in ds_extractions)
+    assert [item.row_number for item in ds_extractions if item.rule_flag] == [2]
+    assert "duplicate DS.No" in (ds_extractions[1].rule_flag_reason or "")
+    assert ds_extractions[0].rule_flag_reason is None
+
+
+def test_pipeline_flags_only_the_cells_with_invalid_values(
+    db_session: Session, tmp_path: Path
+) -> None:
+    truth = json.loads((FIXTURE_DIRECTORY / "sheet_004.json").read_text())["rows"]
+    overrides = {
+        (3, "ds_no"): "3 7",
+        (6, "date"): "not a date",
+        (7, "close_time"): "garbled",
+        (8, "start_km"): "unreadable",
+    }
+    supported_formats = {
+        (1, "date"): "1/8/26",
+        (1, "start_time"): "8:00 am",
+        (1, "total_time"): "12",
+    }
+
+    class ScriptedRecognizer:
+        def __init__(self) -> None:
+            self.calls: dict[str, int] = {}
+
+        def recognize(self, cell_image: np.ndarray) -> tuple[str, float]:
+            raise AssertionError("Field-aware path expected")
+
+        def recognize_field(self, field_name: str, cell_image: np.ndarray) -> tuple[str, float]:
+            row_number = self.calls.get(field_name, 0) + 1
+            self.calls[field_name] = row_number
+            value = overrides.get((row_number, field_name))
+            if value is None:
+                value = supported_formats.get(
+                    (row_number, field_name), str(truth[row_number - 1][field_name])
+                )
+            return value, 0.99
+
+    result = run_sheet_pipeline(
+        image_path=FIXTURE_DIRECTORY / "sheet_004.jpg",
+        crop_root=tmp_path / "crops", db=db_session,
+        recognizer=ScriptedRecognizer(), vehicle="SYNTHETIC-VEHICLE",
+        branch="Synthetic Branch", sheet_date=date(2026, 8, 1),
+        roster_query="Morgan Alder", roster_names=("Morgan Alder",),
+    )
+    extractions = db_session.scalars(
+        select(Extraction).where(Extraction.sheet_id == result.sheet_id)
+    ).all()
+    flagged = {(item.row_number, item.field_name) for item in extractions if item.rule_flag}
+    assert flagged == set(overrides)
+    for item in extractions:
+        if (item.row_number, item.field_name) in overrides:
+            assert item.raw_ocr_value == overrides[(item.row_number, item.field_name)]
+            assert "Validation failed" in (item.rule_flag_reason or "")
+        else:
+            assert item.rule_flag_reason is None
+        if (item.row_number, item.field_name) in supported_formats:
+            assert item.raw_ocr_value == supported_formats[(item.row_number, item.field_name)]

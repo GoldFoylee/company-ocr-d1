@@ -1,5 +1,6 @@
 """Combine OCR confidence and business-rule validation into review flags."""
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Final
 
@@ -19,7 +20,7 @@ class FlaggingDecision:
 def decide_field_flag(
     ocr_text: str,
     ocr_confidence: float,
-    validation_result: ValidationResult,
+    validation_result: ValidationResult | Sequence[ValidationResult],
     *,
     confidence_threshold: float = DEFAULT_REVIEW_CONFIDENCE_THRESHOLD,
 ) -> FlaggingDecision:
@@ -32,10 +33,14 @@ def decide_field_flag(
     _validate_normalized_score(confidence_threshold, name="confidence_threshold")
 
     reasons: list[str] = []
-    if not validation_result.passed:
-        reasons.append(
-            f"Validation failed ({validation_result.rule}): {validation_result.reason}"
-        )
+    validation_results = (
+        (validation_result,)
+        if isinstance(validation_result, ValidationResult)
+        else validation_result
+    )
+    for result in validation_results:
+        if not result.passed:
+            reasons.append(f"Validation failed ({result.rule}): {result.reason}")
 
     if ocr_confidence < confidence_threshold:
         reasons.append(

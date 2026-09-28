@@ -57,6 +57,7 @@ class SheetRowResponse(BaseModel):
 
     row_number: int
     cells: list[SheetCellResponse]
+    warnings: list[str] = []
 
 
 class SheetDetailResponse(SheetSummaryResponse):

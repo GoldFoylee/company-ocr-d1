@@ -113,7 +113,10 @@ function App() {
   }, [])
 
   function activateCell(cell: SheetCell) {
-    if (cell.field_name === 'guest_name' || !cell.needs_review || cell.id === null) return
+    const hasRowWarning = selectedSheet?.rows.some((row) =>
+      row.warnings.length > 0 && row.cells.some((item) => item.id === cell.id),
+    )
+    if (cell.field_name === 'guest_name' || (!cell.needs_review && !hasRowWarning) || cell.id === null) return
     const cellId = cell.id
     setActiveCellId(cellId)
     setDrafts((current) => ({
@@ -145,7 +148,18 @@ function App() {
         })),
       } : current)
       setActiveCellId(null)
-      setNotice('Correction saved.')
+      const warningRow = selectedSheet?.rows.some((row) =>
+        row.warnings.length > 0 && row.cells.some((item) => item.id === cellId),
+      )
+      if (warningRow && selectedSheet) {
+        try {
+          setSelectedSheet(await fetchSheet(selectedSheet.id))
+          setNotice('Correction saved.')
+        } catch {
+          setNotice('Correction saved. Reload the sheet to refresh row warnings.')
+        }
+      }
+      if (!warningRow) setNotice('Correction saved.')
     } catch (error) {
       setCellErrors((current) => ({ ...current, [cellId]: errorMessage(error) }))
     } finally {
@@ -209,6 +223,7 @@ function App() {
   }
 
   const remaining = unresolvedCount(selectedSheet)
+  const rowWarnings = selectedSheet?.rows.reduce((count, row) => count + row.warnings.length, 0) ?? 0
 
   return (
     <main className="review-page">
@@ -284,15 +299,19 @@ function App() {
                     <p>{selectedSheet.branch} · {selectedSheet.date}</p>
                   </div>
                   <div className="sheet-toolbar__actions">
-                    <span className={remaining ? 'status-chip status-chip--attention' : 'status-chip'}>
+                    <span className={remaining || rowWarnings ? 'status-chip status-chip--attention' : 'status-chip'}>
                       {selectedSheet.status === 'verified'
                         ? 'Verified'
-                        : remaining ? `${remaining} flagged` : 'Ready to verify'}
+                        : remaining || rowWarnings
+                          ? `${remaining} flagged · ${rowWarnings} row warnings`
+                          : 'Ready to verify'}
                     </span>
                     <button
                       type="button"
                       className="secondary-button"
-                      disabled={isExporting}
+                      disabled={isExporting || (
+                        !selectedSheet.force_verified && (remaining > 0 || rowWarnings > 0)
+                      )}
                       onClick={() => void exportSelectedSheet()}
                     >
                       {isExporting ? 'Preparing Excel…' : 'Export to Excel'}
@@ -300,7 +319,7 @@ function App() {
                     {selectedSheet.status !== 'verified' && (
                       <button
                         type="button"
-                        disabled={remaining > 0 || isVerifying}
+                        disabled={remaining > 0 || rowWarnings > 0 || isVerifying}
                         onClick={() => void markVerified()}
                       >
                         {isVerifying ? 'Marking verified…' : 'Mark sheet verified'}

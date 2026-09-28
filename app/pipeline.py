@@ -20,12 +20,12 @@ from app.matching import NameMatch, find_best_name_match
 from app.models import Extraction, Sheet
 from app.ocr.base import FieldAwareRecognizer, Recognizer
 from app.preprocessing import preprocess
+from app.validation.canonicalization import canonicalize
 from app.validation.engine import ExtractedRowValues, ValidationEngine, ValidationResult
 from app.validation.flagging import decide_field_flag
+from app.validation.scoping import scope_sheet
 
 _REQUIRED_FIELDS = frozenset(field for field in FIELD_NAMES if field != "guest_name")
-_KILOMETRE_FIELDS = frozenset({"start_km", "close_km", "total_km"})
-_TIME_FIELDS = frozenset({"start_time", "close_time", "total_time"})
 
 
 @dataclass(frozen=True)
@@ -48,30 +48,6 @@ class _RecognizedCrop:
     path: Path
 
 
-def _validation_for_field(
-    field_name: str,
-    row_number: int,
-    row_rules: dict[tuple[str, int], ValidationResult],
-    date_rule: ValidationResult,
-    ds_rule: ValidationResult,
-) -> ValidationResult:
-    """Attach each existing rule to the fields that it actually checks."""
-    if field_name in _KILOMETRE_FIELDS:
-        return row_rules[("kilometre_total", row_number)]
-    if field_name in _TIME_FIELDS:
-        return row_rules[("time_total", row_number)]
-    if field_name == "date":
-        return date_rule
-    if field_name == "ds_no":
-        return ds_rule
-    return ValidationResult(
-        rule="no_applicable_rule",
-        passed=True,
-        reason=f"No validation rule applies to {field_name}",
-        row_number=row_number,
-    )
-
-
 def _build_validation_row(fields: dict[str, _RecognizedCrop]) -> ExtractedRowValues:
     """Adapt tagged OCR output to the validation engine's existing row contract."""
     return ExtractedRowValues(
@@ -83,6 +59,27 @@ def _build_validation_row(fields: dict[str, _RecognizedCrop]) -> ExtractedRowVal
         start_time=fields["start_time"].text,
         closing_time=fields["close_time"].text,
         total_time=fields["total_time"].text,
+    )
+
+
+def _normalize_validation_row(row: ExtractedRowValues) -> ExtractedRowValues:
+    """Feed the legacy aggregate summary the same supported formats as scoping."""
+
+    def normalized(field: str, raw: str) -> str:
+        value = canonicalize(field, raw)
+        if value is None:
+            return raw
+        return value.lower() if field == "total_time" else value
+
+    return ExtractedRowValues(
+        ds_no=row.ds_no,
+        date=normalized("date", row.date),
+        starting_km=normalized("start_km", row.starting_km),
+        closing_km=normalized("close_km", row.closing_km),
+        total_km=normalized("total_km", row.total_km),
+        start_time=normalized("start_time", row.start_time),
+        closing_time=normalized("close_time", row.closing_time),
+        total_time=normalized("total_time", row.total_time),
     )
 
 
@@ -161,32 +158,28 @@ def run_sheet_pipeline(
                 raise ValueError(f"Row {row + 1} has missing field crops: {sorted(missing)}")
 
         values = [_build_validation_row(recognized_by_row[row]) for row in ordered_rows]
-        validation_results = ValidationEngine().validate_sheet(values)
-        row_rules = {
-            (result.rule, result.row_number): result
-            for result in validation_results
-            if result.row_number is not None
-        }
-        date_rule = next(
-            result for result in validation_results if result.rule == "non_decreasing_dates"
+        validation_results = ValidationEngine().validate_sheet(
+            [_normalize_validation_row(row) for row in values]
         )
-        ds_rule = next(
-            result for result in validation_results if result.rule == "unique_ds_no"
+        scoped = scope_sheet(
+            values,
+            [
+                {field: recognized_by_row[row][field].text for field in ("toll", "parking")}
+                for row in ordered_rows
+            ],
         )
 
         # This demonstration input is independent of the scanned sheet.
         roster_match = find_best_name_match(roster_query, roster_names)
 
         extraction_count = 0
-        any_flagged = any(not result.passed for result in validation_results)
+        any_flagged = bool(scoped.row_warnings)
         for row_number, row in enumerate(ordered_rows, start=1):
             for recognized in recognized_by_row[row].values():
                 decision = decide_field_flag(
                     recognized.text,
                     recognized.confidence,
-                    _validation_for_field(
-                        recognized.crop.field_name, row_number, row_rules, date_rule, ds_rule
-                    ),
+                    scoped.for_field(row_number, recognized.crop.field_name),
                 )
                 db.add(
                     Extraction(

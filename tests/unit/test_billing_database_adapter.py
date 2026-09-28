@@ -19,6 +19,7 @@ from app.exports.database_adapter import (
         ("01/08/2026", date(2026, 8, 1)),
         ("01-08-2026", date(2026, 8, 1)),
         ("01.08.2026", date(2026, 8, 1)),
+        ("1/8/26", date(2026, 8, 1)),
     ],
 )
 def test_normalize_billing_date_accepts_pipeline_formats(
@@ -29,7 +30,10 @@ def test_normalize_billing_date_accepts_pipeline_formats(
 
 @pytest.mark.parametrize(
     ("source", "expected"),
-    [("8.05", time(8, 5)), ("08:05", time(8, 5)), ("08:05:30", time(8, 5, 30))],
+    [
+        ("8.05", time(8, 5)), ("08:05", time(8, 5)),
+        ("08:05:30", time(8, 5, 30)), ("8:00 am", time(8, 0)),
+    ],
 )
 def test_normalize_billing_clock_returns_real_time(source: str, expected: time) -> None:
     assert normalize_billing_clock(source) == expected
@@ -37,7 +41,8 @@ def test_normalize_billing_clock_returns_real_time(source: str, expected: time) 
 
 @pytest.mark.parametrize(
     ("source", "expected"),
-    [("1d", "1d"), ("12 H", "12h"), ("38:30", "38:30"), ("1.5h", "1.5h")],
+    [("1d", "1d"), ("12 H", "12h"), ("12", "12h"),
+     ("38:30", "38:30"), ("1.5h", "1.5h")],
 )
 def test_normalize_billing_duration_preserves_elapsed_day_information(
     source: str, expected: str

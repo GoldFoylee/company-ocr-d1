@@ -1,4 +1,4 @@
-import type { FormEvent } from 'react'
+import { Fragment, type FormEvent } from 'react'
 
 import { cropImageUrl, type SheetCell, type SheetDetail } from './api'
 
@@ -35,13 +35,16 @@ export function ReviewGrid({
         </thead>
         <tbody>
           {sheet.rows.map((row) => (
-            <tr key={row.row_number}>
+            <Fragment key={row.row_number}>
+            <tr>
               {row.cells.map((cell) => {
                 const label = labels.get(cell.field_name) ?? cell.field_name
                 const isGuestName = cell.field_name === 'guest_name'
                 const extractionId = cell.id
                 const isFlagged = !isGuestName && cell.needs_review && extractionId !== null
-                const isActive = isFlagged && extractionId === activeCellId
+                const isReviewable = !isGuestName && extractionId !== null &&
+                  (isFlagged || row.warnings.length > 0)
+                const isActive = isReviewable && extractionId === activeCellId
                 const value = cell.effective_value ?? ''
 
                 return (
@@ -49,15 +52,15 @@ export function ReviewGrid({
                     key={cell.field_name}
                     data-testid={`cell-${row.row_number}-${cell.field_name}`}
                     className={isFlagged ? 'review-cell review-cell--flagged' : 'review-cell'}
-                    onMouseEnter={() => { if (isFlagged) onActivate(cell) }}
+                    onMouseEnter={() => { if (isReviewable) onActivate(cell) }}
                   >
                     {isGuestName ? (
                       <span className="excluded-value">Excluded</span>
-                    ) : isFlagged ? (
+                    ) : isReviewable ? (
                       <>
                         <button
                           type="button"
-                          className="flagged-value"
+                          className={isFlagged ? 'flagged-value' : 'warning-value'}
                           aria-label={`Review ${label} row ${row.row_number}`}
                           onClick={() => onActivate(cell)}
                         >
@@ -84,6 +87,15 @@ export function ReviewGrid({
                 )
               })}
             </tr>
+            {row.warnings.length > 0 && (
+              <tr className="row-warning" data-testid={`row-warning-${row.row_number}`}>
+                <td colSpan={sheet.columns.length}>
+                  <strong>Row {row.row_number} warning: </strong>
+                  {row.warnings.join('; ')}
+                </td>
+              </tr>
+            )}
+            </Fragment>
           ))}
         </tbody>
       </table>
